@@ -1,5 +1,6 @@
 import { Inter, Lora, Merriweather } from "next/font/google";
 import "./globals.css";
+import { ReduxProvider } from "@/provider/ReduxProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,7 +37,7 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${merriWeather.variable} ${loraSerif.variable} antialiased`}
       >
-        {children}
+        <ReduxProvider>{children}</ReduxProvider>
       </body>
     </html>
   );
