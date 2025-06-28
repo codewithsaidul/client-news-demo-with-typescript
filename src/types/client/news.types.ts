@@ -22,49 +22,128 @@ export type Status = "published" | "unpublished";
 export type CategoryType = "news" | "life" | "list" | "magazine";
 export type Priority = "none" | "isFeatured" | "isEditorsPick" | "isBreaking";
 
-export interface IAddNewsForm {
+interface BaseNews {
   title: string;
+  slug?: string;
   thumbnail: string;
+  category: Category;
+  newsType: CategoryType;
+  description?: string;
+  tags?: string[];
+  status?: Status;
+  priority?: Priority;
+  author?: {
+    name?: string;
+    email?: string;
+  };
+  createdAt?: Date;
+}
+
+export interface IAddNewsForm extends BaseNews {
   description: string;
   tags: string[];
-  category: Category;
   status: Status;
-  newsType: CategoryType;
   priority: Priority;
+  author: {
+    name?: string;
+    email?: string;
+  };
+  createdAt: Date;
+}
+
+export interface INews extends BaseNews {
+  _id: string;
+  slug: string;
+  description: string;
+  tags: string[];
+  status: Status;
+  priority: Priority;
+  author: {
+    name?: string;
+    email?: string;
+  };
+  createdAt: Date;
+}
+
+export interface FeaturedNews {
+  featuredNews: INews[];
+}
+
+export interface HomePageSection extends BaseNews {
+  slug: string;
+  author: {
+    name?: string;
+    email?: string;
+  };
+  createdAt: Date;
+}
+
+export interface BreakingBannerProps {
+  news: HomePageSection;
+}
+export interface HomeNewsProps {
+  allNews: HomePageSection[];
+}
+
+export interface FeaturedBottom extends BaseNews {
+  slug: string;
   author: {
     name?: string;
     email?: string;
   };
 }
 
-export interface INews {
+export interface EditorPick extends BaseNews {
   _id: string;
-  title: string;
   slug: string;
-  thumbnail: string; // image URL from server
-  description: string;
-  tags: string[];
-  category: Category;
-  newsType: CategoryType;
-  status: Status;
-  priority: Priority;
-  // author: {
-  //   name?: string;
-  //   email?: string;
-  // };
-  createdAt: string;
 }
 
+export interface IArticaleCard extends BaseNews {
+  _id: string;
+  slug: string;
+  description: string;
+  author: {
+    name?: string;
+    email?: string;
+  };
+}
+
+export interface PageCardProps {
+  allNews: IArticaleCard[];
+}
+
+export interface PageHeroSection extends BaseNews {
+  slug: string;
+  description: string;
+  author: {
+    name?: string;
+    email?: string;
+  };
+}
+
+export interface PageHeroProps {
+  news: PageHeroSection;
+}
+
+export interface INewsDetails extends BaseNews {
+  description: string;
+  tags: string[];
+  author: {
+    name?: string;
+    email?: string;
+  };
+}
 
 export interface INewsApiResponse {
   success: boolean;
   message: string;
   data: INews[]; // An array of news items
-  total: number; // Example: for pagination
-  pages: number; // Example: for pagination
+  pagination: {
+    page: number;
+    limit: number;
+    totalPages: number;
+  };
 }
-
-
 
 // Describes the arguments you can pass to the query
 export interface IGetAllNewsParams {

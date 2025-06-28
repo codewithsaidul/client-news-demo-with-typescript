@@ -2,6 +2,7 @@ import { News } from "@/models/news.models";
 import { TDeleteUserContext } from "@/types/server";
 import { connectDB } from "@/utils/connectDB";
 import { verifyRoles } from "@/utils/verifyRoles";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
 export const DELETE = async (req: NextRequest, { params }: TDeleteUserContext) => {
@@ -17,6 +18,9 @@ export const DELETE = async (req: NextRequest, { params }: TDeleteUserContext) =
 
     // insert news data on db
     const result = await News.deleteOne(query);
+
+    revalidateTag("news-list")
+    revalidatePath("/")
 
     return NextResponse.json(result, { status: 200 });
   } catch {

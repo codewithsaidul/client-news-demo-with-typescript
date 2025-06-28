@@ -30,9 +30,9 @@ export const GET = async (req: NextRequest) => {
 
     const query: ParamsServer = {
       status: "published",
+      priority: priority
     };
 
-    if (priority !== "none") query.priority = priority;
 
     if (newsType !== "none") {
       query.newsType = newsType;
@@ -89,7 +89,9 @@ export const GET = async (req: NextRequest) => {
     console.log(error);
     return NextResponse.json(
       { error: "Something went wrong" },
-      { status: 500 }
+      {
+        status: 500
+      }
     );
   }
 };

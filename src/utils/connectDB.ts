@@ -14,7 +14,7 @@ export const connectDB = async (): Promise<void> => {
   // যদি .env ফাইল থেকে URI না পাওয়া যায়, তাহলে এরর দিন
   if (!process.env.DB_URL) {
     throw new Error('DB_URI not found in environment variables.');
-  }
+  }             
 
   try {
     // নতুন কানেকশন তৈরি করুন

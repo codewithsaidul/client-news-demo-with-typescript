@@ -1,8 +1,8 @@
-import React from 'react';
+
 
 interface IBanner {
-  color: string;
-  image: string;
+  color?: string;
+  image?: string;
   title: string
 }
 

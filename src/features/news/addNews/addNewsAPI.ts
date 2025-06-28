@@ -31,7 +31,7 @@ export const addNewsAPI = apiSlice.injectEndpoints({
                 ...newsData,
                 _id: tempId,
                 slug: "Temporary SLug",
-                createdAt: new Date().toISOString(),
+                createdAt: new Date(),
               });
             }
           )

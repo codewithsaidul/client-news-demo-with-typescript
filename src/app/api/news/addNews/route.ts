@@ -1,6 +1,7 @@
 import { News } from "@/models/news.models";
 import { connectDB } from "@/utils/connectDB";
 import { verifyRoles } from "@/utils/verifyRoles";
+import { revalidatePath, revalidateTag } from "next/cache";
 
 import { NextRequest, NextResponse } from "next/server";
 
@@ -17,6 +18,10 @@ export const POST = async (req: NextRequest) => {
 
     // insert news data on db
     const result = await News.insertOne(data);
+
+
+    revalidateTag("news-list")
+    revalidatePath("/")
 
     return NextResponse.json(result, { status: 200 });
   } catch {

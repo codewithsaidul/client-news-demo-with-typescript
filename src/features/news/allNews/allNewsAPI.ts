@@ -1,10 +1,10 @@
 import { apiSlice } from "@/features/Api/apiSlice";
-import { INews } from "@/types/client/news.types";
+import { INewsApiResponse } from "@/types/client/news.types";
 import { IGetAllNewsParams } from "../../../types/client/news.types";
 
 export const allNewsAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    getAllNews: builder.query<INews[], IGetAllNewsParams>({
+    getAllNews: builder.query<INewsApiResponse, IGetAllNewsParams>({
       query: ({
         page = 1,
         category,
@@ -25,7 +25,7 @@ export const allNewsAPI = apiSlice.injectEndpoints({
         result
           ? [
               // tag each news item by its id
-              ...result.map(({ slug }) => ({
+              ...result.data.map(({ slug }) => ({
                 type: "News" as const,
                 id: slug,
               })),
