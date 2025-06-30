@@ -28,11 +28,13 @@ export const GET = async (req: NextRequest) => {
     const limit = 20;
     const skip = (page - 1) * limit;
 
-    const query: ParamsServer = {
-      status: "published",
-      priority: priority
-    };
+    const query: ParamsServer = {};
 
+    console.log("priority", priority);
+
+    if (priority !== "none") {
+      query.priority = priority;
+    }
 
     if (newsType !== "none") {
       query.newsType = newsType;
@@ -53,6 +55,8 @@ export const GET = async (req: NextRequest) => {
     if (authorEmail !== "none") {
       query["author.email"] = authorEmail;
     }
+
+    console.log("query", query);
 
     // connecting with mongodb
     await connectDB();
@@ -90,7 +94,7 @@ export const GET = async (req: NextRequest) => {
     return NextResponse.json(
       { error: "Something went wrong" },
       {
-        status: 500
+        status: 500,
       }
     );
   }

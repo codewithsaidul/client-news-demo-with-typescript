@@ -3,7 +3,6 @@ import { z } from "zod";
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
-
 export const createUserSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
@@ -14,12 +13,17 @@ export const createUserSchema = z.object({
       passwordRegex,
       "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character"
     ),
-  role: z.string().min(1, "Role is required"),
+  role: z.enum(["editor", "superadmin"], {
+    required_error: "A role must be selected.",
+  }),
 });
+
 export const updateUserSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
-  role: z.string().min(1, "Role is required"),
+  role: z.enum(["editor", "superadmin"], {
+    required_error: "A role must be selected.",
+  }),
 });
 
 // ===================== add form schema =================================

@@ -3,12 +3,18 @@ import {
   IAddNewsForm,
   IGetAllNewsParams,
   INews,
+  INewsApiResponse,
 } from "@/types/client/news.types";
 import { allNewsAPI } from "../allNews/allNewsAPI";
 
+interface AddNewsResponse {
+  acknowledged: boolean;
+  data: INews;
+}
+
 export const addNewsAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
-    addNews: builder.mutation<INews, IAddNewsForm>({
+    addNews: builder.mutation<AddNewsResponse, IAddNewsForm>({
       query: (newsData) => ({
         url: "/api/news/addNews",
         method: "POST",
@@ -25,9 +31,9 @@ export const addNewsAPI = apiSlice.injectEndpoints({
           allNewsAPI.util.updateQueryData(
             "getAllNews",
             queryArgs,
-            (draft: INews[]) => {
+            (draft: INewsApiResponse) => {
               // Add new item at the start of the list (like unshift)
-              draft.unshift({
+              draft.data.unshift({
                 ...newsData,
                 _id: tempId,
                 slug: "Temporary SLug",
@@ -38,18 +44,19 @@ export const addNewsAPI = apiSlice.injectEndpoints({
         );
 
         try {
-          const { data: newNews } = await queryFulfilled;
+          const response = await queryFulfilled;
+          const newNews = response.data.data;
 
           // Replace temp item with real item from server response
           dispatch(
             allNewsAPI.util.updateQueryData(
               "getAllNews",
               queryArgs,
-              (draft: INews[]) => {
-                const index = draft.findIndex(
-                  (item: INews) => item._id === tempId
+              (draft: INewsApiResponse) => {
+                const index = draft.data.findIndex(
+                  (item) => item._id === tempId
                 );
-                if (index !== -1) draft[index] = newNews;
+                if (index !== -1) draft.data[index] = newNews;
               }
             )
           );

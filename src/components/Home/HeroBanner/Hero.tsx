@@ -1,3 +1,4 @@
+import NoDataFound from "@/components/Shared/NoDataFound";
 import { stripHtmlOnServer } from "@/utils/server-utils";
 import Image from "next/image";
 import Link from "next/link";
@@ -7,6 +8,7 @@ const Hero = async () => {
     `${process.env.NEXT_PUBLIC_BASE_URL}/api/news/allNews?priority=isBreaking`,
     { next: { tags: ["news-list"] } }
   );
+
 
   const data = await res.json();
   const breakingNews = data.data[0];
@@ -56,7 +58,7 @@ const Hero = async () => {
           </Link>
         </section>
       ) : (
-        ""
+        <NoDataFound />
       )}
     </>
   );

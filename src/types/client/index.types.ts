@@ -22,7 +22,6 @@ export interface ISideBar {
 
 export interface SocialLink {
   id: number;
-  name: string;
   icon: React.ReactNode; // অথবা JSX.Element ব্যবহার করতে পারেন
   link: string;
 }

@@ -67,3 +67,5 @@ export const categoryMap = {
   list: ["Top 10", "Must Read", "Editors Picks"],
   magazine: ["Cover Story", "Exclusive", "Breaking Today"],
 };
+
+export type CategoryMapKey = keyof typeof categoryMap;

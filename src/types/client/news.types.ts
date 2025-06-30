@@ -22,7 +22,7 @@ export type Status = "published" | "unpublished";
 export type CategoryType = "news" | "life" | "list" | "magazine";
 export type Priority = "none" | "isFeatured" | "isEditorsPick" | "isBreaking";
 
-interface BaseNews {
+export interface BaseNews {
   title: string;
   slug?: string;
   thumbnail: string;
@@ -48,7 +48,7 @@ export interface IAddNewsForm extends BaseNews {
     name?: string;
     email?: string;
   };
-  createdAt: Date;
+  createdAt?: Date;
 }
 
 export interface INews extends BaseNews {
@@ -142,7 +142,16 @@ export interface INewsApiResponse {
     page: number;
     limit: number;
     totalPages: number;
+    published: number;
+    unpublished: number;
   };
+}
+
+export interface OverviewNews extends BaseNews {
+  _id: string;
+  description: string;
+  createdAt: Date;
+  status: Status
 }
 
 // Describes the arguments you can pass to the query

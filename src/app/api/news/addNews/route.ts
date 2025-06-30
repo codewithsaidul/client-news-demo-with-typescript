@@ -19,11 +19,13 @@ export const POST = async (req: NextRequest) => {
     // insert news data on db
     const result = await News.insertOne(data);
 
-
-    revalidateTag("news-list")
-    revalidatePath("/")
-
-    return NextResponse.json(result, { status: 200 });
+    if (result.acknowledged) {
+      revalidateTag("news-list");
+      revalidatePath("/");
+      return NextResponse.json({ acknowledged: true, data }, { status: 200 }); // ✅ send full data
+    } else {
+      return NextResponse.json({ acknowledged: false }, { status: 500 });
+    }
   } catch {
     return NextResponse.json(
       { error: "Something went wrong" },

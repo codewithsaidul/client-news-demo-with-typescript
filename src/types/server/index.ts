@@ -20,7 +20,7 @@ export interface ParamsServer {
   newsType?: string;
   priority?: string;
   "author.email"?: string;
-  status: string | { $in: string[] };
+  status?: string
 }
 
 
