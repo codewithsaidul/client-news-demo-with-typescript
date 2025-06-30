@@ -13,10 +13,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useGetAllTrashedNewsQuery } from "@/features/news/allTrashedNews/allTrashedNewsAPI";
-import { useMoveNewsToTrashMutation } from "@/features/news/moveNewsToTrashAPI/moveNewsToTrashAPI";
+import { usePermanentDeleteNewsMutation } from "@/features/news/permanentDelete/permanentDeleteNewsAPI";
+import { useRestoreNewsMutation } from "@/features/news/restoreNews/restoreNewsAPI";
 import { stripHtml } from "@/utils/stripHtml";
 import { cn, dateFormater } from "@/utils/utils";
-import { Trash2 } from "lucide-react";
+import { ArchiveRestore, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import Swal from "sweetalert2";
@@ -26,7 +27,8 @@ const TrashedNews = () => {
   const [page, setPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const { data, isLoading } = useGetAllTrashedNewsQuery({ page });
-  const [moveNewsToTrash] = useMoveNewsToTrashMutation();
+  const [permanentDeleteNews] = usePermanentDeleteNewsMutation();
+  const [restoreNews] = useRestoreNewsMutation();
 
   if (isLoading) {
     return (
@@ -67,16 +69,49 @@ const TrashedNews = () => {
   const rowCount = trashedNews.length;
   const itemsPerPage = 20;
 
-  // ================= move to trash by id =================
-  const moveToTrash = async () => {
+  // ======================== handle news restore by ids ===========================
+  const handleNewsRestore = async () => {
     try {
-      const { data } = await moveNewsToTrash(selectedIds);
+      const { data } = await restoreNews(selectedIds);
       if (data?.success) {
         Swal.fire({
-          title: "Moved to Trash!",
+          title: "Restored!",
           text: data.message,
           icon: "success",
         });
+      }
+    } catch (error) {
+      if (error instanceof Error) {
+        Swal.fire({
+          title: "Failed",
+          text: error.message,
+          icon: "error",
+        });
+      }
+    }
+  };
+
+  // ================= permanent delete by id or ids =================
+  const handlePermanentDeleteNews = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
+    });
+    try {
+      if (result.isConfirmed) {
+        const { data } = await permanentDeleteNews(selectedIds);
+        if (data?.success) {
+          Swal.fire({
+            title: "Deleted!",
+            text: data.message,
+            icon: "success",
+          });
+        }
       }
     } catch (error) {
       if (error instanceof Error) {
@@ -105,23 +140,48 @@ const TrashedNews = () => {
             <span>Selected All</span>
           </div>
 
-          <div
-            className={cn(
-              "flex transition-all duration-300 ease-in-out overflow-hidden", // বেস স্টাইল এবং ট্রানজিশন
-              {
-                "opacity-100 translate-x-0": selectedIds.length > 0, // দেখানোর জন্য স্টাইল
-                "opacity-0 translate-x-full pointer-events-none":
-                  selectedIds.length === 0, // লুকানোর জন্য স্টাইল
-              }
-            )}
-          >
-            <Button
-              onClick={moveToTrash}
-              className="bg-red-600 hover:bg-red-600/60 cursor-pointer"
-            >
-              <Trash2 /> <span>Delete All</span>
-            </Button>
-          </div>
+          {/* ============= delete & resote btn */}
+          {trashedNews.length > 0 && (
+            <div className="flex items-center gap-3">
+              {/* ================= restore btn */}
+              <div
+                className={cn(
+                  "flex transition-all duration-300 ease-in-out overflow-hidden", // বেস স্টাইল এবং ট্রানজিশন
+                  {
+                    "opacity-100 translate-x-0": selectedIds.length > 0, // দেখানোর জন্য স্টাইল
+                    "opacity-0 translate-x-full pointer-events-none":
+                      selectedIds.length === 0, // লুকানোর জন্য স্টাইল
+                  }
+                )}
+              >
+                <Button
+                  onClick={handleNewsRestore}
+                  className="bg-green-600 hover:bg-green-600/80 cursor-pointer"
+                >
+                  <ArchiveRestore /> <span>Restore</span>
+                </Button>
+              </div>
+
+              {/* ================= delete btn */}
+              <div
+                className={cn(
+                  "flex transition-all duration-300 ease-in-out overflow-hidden", // বেস স্টাইল এবং ট্রানজিশন
+                  {
+                    "opacity-100 translate-x-0": selectedIds.length > 0, // দেখানোর জন্য স্টাইল
+                    "opacity-0 translate-x-full pointer-events-none":
+                      selectedIds.length === 0, // লুকানোর জন্য স্টাইল
+                  }
+                )}
+              >
+                <Button
+                  onClick={handlePermanentDeleteNews}
+                  className="bg-red-600 hover:bg-red-600/60 cursor-pointer"
+                >
+                  <Trash2 /> <span>Delete All</span>
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
         <Table>
           <TableHeader>
@@ -186,13 +246,20 @@ const TrashedNews = () => {
           </TableBody>
         </Table>
 
-        <div>
-          <PaginationPage
-            page={page}
-            setPage={setPage}
-            totalPages={pagination?.totalPages}
-          />
-        </div>
+
+        {
+          trashedNews.length === 0 && <NoDataFound />
+        }
+
+        {trashedNews.length > 19 && (
+          <div>
+            <PaginationPage
+              page={page}
+              setPage={setPage}
+              totalPages={pagination?.totalPages}
+            />
+          </div>
+        )}
       </div>
     </div>
   );

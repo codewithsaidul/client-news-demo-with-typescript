@@ -14,7 +14,6 @@ export const POST = async (req: NextRequest) => {
 
     const { selectedIds } = await req.json();
 
-
     // connected with mongodb database
     await connectDB();
     // ================== Transaction Start ==================
@@ -45,8 +44,6 @@ export const POST = async (req: NextRequest) => {
     // ৪. মূল `News` কালেকশন থেকে নিউজগুলোকে ডিলিট করা
     await News.deleteMany({ _id: { $in: selectedIds } }).session(session);
 
-    
-
     // ৫. ট্রানজেকশন কমিট করা
     await session.commitTransaction();
 
@@ -61,16 +58,22 @@ export const POST = async (req: NextRequest) => {
       { status: 200 }
     );
   } catch (error) {
+    // ৮. কোনো ইরোর হলে ট্রানজেকশন বাতিল করুন
+    if (session.inTransaction()) {
+      await session.abortTransaction();
+    }
     let errorMessage = "Something went wrong";
 
     if (error instanceof Error) {
       errorMessage = error.message;
     }
 
-
     return NextResponse.json(
       { success: false, error: errorMessage },
       { status: 500 }
     );
+  } finally {
+    // ৯. সবশেষে সেশনটি বন্ধ করুন
+    await session.endSession();
   }
 };

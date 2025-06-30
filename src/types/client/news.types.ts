@@ -141,6 +141,7 @@ export interface INewsApiResponse {
   pagination: {
     page: number;
     limit: number;
+    total: number;
     totalPages: number;
     published: number;
     unpublished: number;

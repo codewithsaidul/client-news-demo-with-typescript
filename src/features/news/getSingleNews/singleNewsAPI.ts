@@ -5,7 +5,8 @@ export const singleNewsAPI = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getSingleNews: builder.query<INews, string>({
       query: (slug) => `/api/news/allNews/${slug}`,
-      providesTags: (result, error, slug) => [{ type: "News", id: slug }],
+      providesTags: (result) =>
+        result ? [{ type: "News", id: result._id }] : [],
     }),
   }),
 });

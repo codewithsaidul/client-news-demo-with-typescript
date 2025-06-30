@@ -32,7 +32,7 @@ const Overview = () => {
         <NewsCard
           published={pagination.published}
           unpublished={pagination.unpublished}
-          totalNews={pagination.totalPages}
+          totalNews={pagination.total}
         />
         <DataTable allNews={news} />
       </div>

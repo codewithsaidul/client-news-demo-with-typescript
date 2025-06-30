@@ -9,10 +9,7 @@ export const updateNewsAPI = apiSlice.injectEndpoints({
         method: "PATCH",
         body: newsData,
       }),
-      invalidatesTags: (result, error, {slug}) => [
-        { type: "News", id: slug }, // the deleted news item tag
-        { type: "News", id: "LIST" }, // the overall news list tag
-      ],
+      invalidatesTags: (result) => result ? [{ type: "News", id: result._id }] : [],
     }),
   }),
 });

@@ -30,7 +30,6 @@ export const GET = async (req: NextRequest) => {
 
     const query: ParamsServer = {};
 
-    console.log("priority", priority);
 
     if (priority !== "none") {
       query.priority = priority;
@@ -68,6 +67,8 @@ export const GET = async (req: NextRequest) => {
       .limit(limit);
 
     const total = await News.countDocuments(query);
+
+    console.log(total)
     // Count published and unpublished with same filters
     const publishedCount = await News.countDocuments({
       ...query,
