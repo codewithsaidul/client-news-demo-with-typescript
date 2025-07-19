@@ -149,51 +149,160 @@
   .sidebar::-webkit-scrollbar {
     display: none !important;
   }
-
 }
 
 @layer utilities {
-  /* rich text editor */
-  .quill-content h1 {
-    @apply text-3xl! font-bold! my-4!;
+
+  /* =============================== tip tap ========================== */
+
+  .editor-container {
+    position: relative;
   }
 
-  .quill-content h2 {
-    @apply text-2xl! font-semibold my-3;
+  .tiptap {
+    h1 {
+      @apply text-5xl font-bold mb-3 !wrap-break-word;
+    }
+
+    h2 {
+      @apply text-3xl font-semibold mb-3;
+    }
+
+    h3 {
+      @apply text-2xl font-semibold mb-3;
+    }
+
+    p {
+      @apply text-base font-normal;
+    }
+
+    a {
+      @apply text-base text-blue-600 underline duration-700 hover:text-blue-700 hover:duration-700;
+    }
+
+    img {
+      width: 300px;
+      height: 300px;
+      margin: 1.5rem 0;
+      max-width: 100%;
+      max-height: 600px;
+
+      &.ProseMirror-selectednode {
+        outline: 3px solid var(--purple);
+      }
+    }
   }
 
-  .quill-content h3 {
-    @apply text-xl! font-semibold! my-2!;
+  /* Toggle বাটন যখন অ্যাক্টিভ বা 'pressed' থাকবে, তার জন্য স্টাইল */
+  button[data-state="on"] {
+    @apply bg-black text-white hover:bg-slate-700 hover:text-white;
   }
 
-  .quill-content p {
-    @apply text-base! leading-relaxed! my-2!;
+  /* globals.css */
+
+  /* টেবিলের স্টাইল */
+  .tiptap table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
   }
 
-  .quill-content ul {
-    @apply list-disc! list-inside! my-2!;
+  .tiptap th,
+  .tiptap td {
+    border: 1px solid #ccc;
+    padding: 0.5rem;
+    min-width: 1em;
+    vertical-align: top;
+    position: relative;
   }
 
-  .quill-content ol {
-    @apply list-decimal! list-inside! my-2!;
+  .tiptap th {
+    background-color: #f1f3f5;
+    font-weight: bold;
+    text-align: left;
   }
 
-  .quill-content img {
-    @apply w-full max-w-[600px]! max-h-[1000px]! aspect-[3/4]! object-center! rounded-lg! my-4! mx-auto!;
+  /* কলাম রিসাইজ করার হ্যান্ডেলের জন্য স্টাইল */
+  .tiptap .column-resize-handle {
+    position: absolute;
+    right: -2px;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #adf;
+    pointer-events: none;
   }
 
-  .quill-content a {
-    @apply text-news-cta! underline! hover:text-news-cta/70! hover:duration-500 duration-500;
-  }
+  /* tiptap content */
+  .tiptap-content {
+    @apply overflow-auto;
 
-  .quill-content strong,
-  .quill-content b {
-    @apply font-bold! text-gray-900!;
-  }
+    h1 {
+      @apply text-5xl! font-bold! my-4!;
+    }
 
-  .quill-content i,
-  .quill-content em {
-    @apply italic;
+    h2 {
+      @apply text-3xl! font-semibold my-3;
+    }
+
+    h3 {
+      @apply text-2xl! font-semibold! my-2!;
+    }
+
+    p {
+      @apply text-base! leading-relaxed! my-2!;
+    }
+
+    ul {
+      @apply list-disc! list-inside! my-2!;
+    }
+
+    ol {
+      @apply list-decimal! list-inside! my-2!;
+    }
+
+    img {
+      @apply w-full max-w-[600px]! max-h-[1000px]! aspect-[3/4]! object-center! rounded-lg! my-4! mx-auto!;
+    }
+
+    a {
+      @apply text-news-cta! underline! hover:text-news-cta/70! hover:duration-500 duration-500;
+    }
+
+    strong,
+    b {
+      @apply font-bold! text-gray-900!;
+    }
+
+    i,
+    em {
+      @apply italic;
+    }
+
+    table {
+      @apply w-full border border-gray-300 border-collapse my-4;
+    }
+
+    thead {
+      @apply bg-gray-100;
+    }
+
+    th,
+    td {
+      @apply border border-gray-50 px-4 py-2 text-left;
+    }
+
+    th {
+      @apply font-semibold bg-gray-300;
+    }
+
+    tbody tr:nth-child(odd) {
+      @apply bg-gray-100;
+    }
+
+    tbody tr:hover {
+      @apply bg-gray-50 transition duration-300;
+    }
   }
 }
 

@@ -41,47 +41,47 @@ const NewsDetails = () => {
     author,
   }: INewsDetails = news;
 
-  const cleanDescription = sanitizeHtml(description, {
-    allowedTags: [
-      "p",
-      "b",
-      "i",
-      "em",
-      "strong",
-      "ul",
-      "ol",
-      "li",
-      "a",
-      "img",
-      "h1",
-      "h2",
-      "h3",
-      "br",
-    ],
-    allowedAttributes: {
-      img: ["src", "alt", "width", "height", "style"],
-      a: ["href", "target", "rel"],
-    },
-    transformTags: {
-      a: (_tagName: string, attribs: Record<string, string>) => {
-        return {
-          tagName: "a",
-          attribs: {
-            ...attribs,
-            target: "_blank",
-            rel: "noopener noreferrer",
-          },
-        };
-      },
-    },
-  });
+  // const cleanDescription = sanitizeHtml(description, {
+  //   allowedTags: [
+  //     "p",
+  //     "b",
+  //     "i",
+  //     "em",
+  //     "strong",
+  //     "ul",
+  //     "ol",
+  //     "li",
+  //     "a",
+  //     "img",
+  //     "h1",
+  //     "h2",
+  //     "h3",
+  //     "br",
+  //   ],
+  //   allowedAttributes: {
+  //     img: ["src", "alt", "width", "height", "style"],
+  //     a: ["href", "target", "rel"],
+  //   },
+  //   transformTags: {
+  //     a: (_tagName: string, attribs: Record<string, string>) => {
+  //       return {
+  //         tagName: "a",
+  //         attribs: {
+  //           ...attribs,
+  //           target: "_blank",
+  //           rel: "noopener noreferrer",
+  //         },
+  //       };
+  //     },
+  //   },
+  // });
 
   return (
     <div className="mt-20">
       <div>
         <figure className="relative aspect-video w-full max-h-[300px] md:max-h-[400px] lg:max-h-[500px] xl:max-h-[600px]">
           <Image
-            src={thumbnail}
+            src={thumbnail as string}
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
@@ -114,9 +114,9 @@ const NewsDetails = () => {
             <span className="text-gray-500">{dateFormater(createdAt)}</span>
           </div>
 
-          <p
-            className="text-news-text text-lg mt-8"
-            dangerouslySetInnerHTML={{ __html: sanitizeHtml(cleanDescription) }}
+          <div
+            className="text-news-text text-lg mt-8 tiptap-content"
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
           />
         </div>
       </div>

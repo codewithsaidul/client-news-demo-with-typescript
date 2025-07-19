@@ -55,8 +55,6 @@ export const GET = async (req: NextRequest) => {
       query["author.email"] = authorEmail;
     }
 
-    console.log("query", query);
-
     // connecting with mongodb
     await connectDB();
 
@@ -68,7 +66,7 @@ export const GET = async (req: NextRequest) => {
 
     const total = await News.countDocuments(query);
 
-    console.log(total)
+
     // Count published and unpublished with same filters
     const publishedCount = await News.countDocuments({
       ...query,

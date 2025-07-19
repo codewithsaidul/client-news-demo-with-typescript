@@ -41,47 +41,14 @@ const MagazineDetails = () => {
     author,
   }: INewsDetails = news;
 
-  const cleanDescription = sanitizeHtml(description, {
-    allowedTags: [
-      "p",
-      "b",
-      "i",
-      "em",
-      "strong",
-      "ul",
-      "ol",
-      "li",
-      "a",
-      "img",
-      "h1",
-      "h2",
-      "h3",
-      "br",
-    ],
-    allowedAttributes: {
-      img: ["src", "alt", "width", "height", "style"],
-      a: ["href", "target", "rel"],
-    },
-    transformTags: {
-      a: (_tagName: string, attribs: Record<string, string>) => {
-        return {
-          tagName: "a",
-          attribs: {
-            ...attribs,
-            target: "_blank",
-            rel: "noopener noreferrer",
-          },
-        };
-      },
-    },
-  });
+
 
   return (
     <div className="mt-24">
       <div>
         <figure className="relative aspect-[3/4] max-w-[290px] sm:max-w-[500px] md:max-w-[600px] max-h-[1000px] px-4 mx-auto">
           <Image
-            src={thumbnail}
+            src={thumbnail as string}
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
@@ -115,8 +82,8 @@ const MagazineDetails = () => {
           </div>
 
           <p
-            className="text-news-text text-lg mt-8 quill-content"
-            dangerouslySetInnerHTML={{ __html: cleanDescription }}
+            className="text-news-text text-lg mt-8 tiptap-content"
+            dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
           />
         </div>
       </div>

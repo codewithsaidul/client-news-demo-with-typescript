@@ -1,4 +1,4 @@
-import { News } from "@/models/news.models";
+import { Draft } from "@/models/news.draft.models";
 import { connectDB } from "@/utils/connectDB";
 import { verifyRoles } from "@/utils/verifyRoles";
 import { revalidatePath, revalidateTag } from "next/cache";
@@ -16,23 +16,24 @@ export const POST = async (req: NextRequest) => {
     // connected with mongodb database
     await connectDB();
 
-    const postData = {
+    const draftData = {
       ...data,
-      status: "published"
+      status: "unpublished"
     }
 
     // insert news data on db
-    const result = await News.insertOne(postData);
+    const result = await Draft.insertOne(draftData);
 
 
     if (result) {
-      revalidateTag("news-list");
+      revalidateTag("draft-list");
       revalidatePath("/");
-      return NextResponse.json({ acknowledged: true, data }, { status: 200 }); // ✅ send full data
+      return NextResponse.json({ acknowledged: true, data: result }, { status: 200 }); // ✅ send full data
     } else {
-      return NextResponse.json({ acknowledged: false }, { status: 500 });
+      return NextResponse.json({ acknowledged: false, data: null }, { status: 500 });
     }
-  } catch {
+  } catch (err) {
+    console.log(err)
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 }

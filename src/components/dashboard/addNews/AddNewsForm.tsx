@@ -1,6 +1,7 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Dialog } from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -22,28 +23,34 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { categoryMap, CategoryMapKey } from "@/constants/data";
+import { useAddDraftMutation } from "@/features/news/addDraft/addDraftAPI";
 import { useAddNewsMutation } from "@/features/news/addNews/addNewsAPI";
 import { useGetCurrentUserQuery } from "@/features/user/currentUser/currentUserAPI";
-import { addFormSchema } from "@/schema/schema";
+import { addFormSchema, NewsFormData } from "@/schema/schema";
+import { Category, Status } from "@/types/client/news.types";
 import { uploadToImgBB } from "@/utils/uploadImage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
-import dynamic from "next/dynamic";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-
-// ✅ Dynamically import with SSR disabled
-const QuillEditor = dynamic(() => import("./QuillEditor"), { ssr: false });
+import { NewsPreviewModal } from "./PrevewNews";
+import RichTextEditor from "@/components/RichTextEditor/TextEditor";
 
 const AddNewsForm = () => {
-  const { data: currUser} = useGetCurrentUserQuery(undefined);
+  const { data: currUser } = useGetCurrentUserQuery(undefined);
   const [tags, setTags] = useState<string[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [addNews] = useAddNewsMutation();
-  const [isLoading, setIsLoading] = useState(false);
+  const [addDraft] = useAddDraftMutation();
+  const [loadingAction, setLoadingAction] = useState<"post" | "draft" | null>(
+    null
+  );
   const [categoryType, setCategoryType] = useState<CategoryMapKey>("news");
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [previewData, setPreviewData] = useState<NewsFormData | null>(null);
+  const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
   const router = useRouter();
 
   // get the react hook form with default values
@@ -56,18 +63,27 @@ const AddNewsForm = () => {
       thumbnail: undefined, // For file input
       description: "",
       tags: [], // This should be updated as user adds tags
-      category: "",
+      category: "world-news",
       categoryType: "news",
       status: "published", // Or leave as "" if it's mandatory to select
       priority: "none", // Default radio value
+      author: { name: "", email: "" },
     },
   });
+
+  // Cleanup the object URL to avoid memory leaks
+  useEffect(() => {
+    return () => {
+      if (thumbnailPreview) {
+        URL.revokeObjectURL(thumbnailPreview);
+      }
+    };
+  }, [thumbnailPreview]);
 
   // Sync tags state with form value
   useEffect(() => {
     form.setValue("tags", tags, { shouldValidate: false });
   }, [tags, form]);
-
 
   // for adding tags
   // For adding tag:
@@ -92,44 +108,109 @@ const AddNewsForm = () => {
     form.setValue("tags", updatedTags, { shouldValidate: true }); // Sync immediately
   };
 
-  // ====================== submit news data on db ====================
-  const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-    setIsLoading(true);
-    const file = values.thumbnail[0];
+  // preview handler
+  const onPreview: SubmitHandler<FieldValues> = async (data) => {
+    const file = data.thumbnail[0];
     const imgUrl = await uploadToImgBB(file);
+    setThumbnailPreview(imgUrl);
+
+    setPreviewData({
+      title: data.title,
+      description: data.description,
+      tags: data.tags,
+      thumbnail: imgUrl,
+      category: data.category,
+      categoryType: data.categoryType,
+      status: data.status,
+      priority: data.priority,
+      author: currUser._id,
+    });
+    setModalOpen(true);
+  };
+
+  // ====================== submit news data on db ====================
+  // const onSubmit: SubmitHandler<FieldValues> = async (values) => {
+  //   setIsLoading(true);
+  //   const file = values.thumbnail[0];
+  //   const imgUrl = await uploadToImgBB(file);
+
+  //   const newsData = {
+  //     title: values.title,
+  //     thumbnail: imgUrl,
+  //     description: values.description,
+  //     tags: values.tags,
+  //     category: values.category,
+  //     newsType: values.categoryType,
+  //     status: values.status,
+  //     priority: values.priority,
+  //     author: {
+  //       name: currUser.name,
+  //       email: currUser.email,
+  //     },
+  //   };
+
+  //   try {
+  //     const res = await addNews(newsData).unwrap();
+
+  //     if (res.acknowledged) {
+  //       Swal.fire({
+  //         title: "News Added successfully!",
+  //         icon: "success",
+  //       });
+  //       setIsLoading(false);
+  //       router.push("/dashboard/allNews");
+  //     }
+  //   } catch {
+  //     Swal.fire({
+  //       title: "Failed to add news",
+  //       icon: "error",
+  //     });
+  //     setIsLoading(false);
+  //   }
+  // };
+
+  const handleFinalSubmit = async (status: Status) => {
+    setModalOpen(false); // 🟢 modal বন্ধ
+    if (!previewData) return;
+    const action = status === "published" ? "post" : "draft";
+    setLoadingAction(action);
 
     const newsData = {
-      title: values.title,
-      thumbnail: imgUrl,
-      description: values.description,
-      tags: values.tags,
-      category: values.category,
-      newsType: values.categoryType,
-      status: values.status,
-      priority: values.priority,
-      author: {
-        name: currUser.name,
-        email: currUser.email
-      }
+      ...previewData,
+      newsType: previewData.categoryType,
     };
-
     try {
-      const res = await addNews(newsData).unwrap();
-
+      const successMessage =
+        action === "post"
+          ? "News Added successfully!"
+          : "News Added on draft successfully!";
+      const res =
+        action === "post"
+          ? await addNews(newsData).unwrap()
+          : await addDraft(newsData).unwrap();
       if (res.acknowledged) {
         Swal.fire({
-          title: "News Added successfully!",
+          title: "Successfully!",
+          text: successMessage,
           icon: "success",
         });
-        setIsLoading(false);
-        router.push("/dashboard/allNews");
+        if (action === "post") {
+          router.push("/dashboard/allNews");
+        } else {
+          router.push("/dashboard/allDraftNews");
+        }
       }
     } catch {
+      setLoadingAction(null)
+      const errorMessage =
+        status === "published"
+          ? "News Posting failed"
+          : "Failed to added news on draft";
       Swal.fire({
-        title: "Failed to add news",
+        title: "Failed",
+        text: errorMessage,
         icon: "error",
       });
-      setIsLoading(false);
     }
   };
 
@@ -137,7 +218,7 @@ const AddNewsForm = () => {
     <div className="flex justify-center items-center min-h-screen">
       <Form {...form}>
         <form
-          onSubmit={form.handleSubmit(onSubmit)}
+          onSubmit={form.handleSubmit(onPreview)}
           className="bg-white shadow-lg w-[70%] p-10 space-y-10"
         >
           {/* news title */}
@@ -234,7 +315,7 @@ const AddNewsForm = () => {
                       onValueChange={(value) => {
                         field.onChange(value);
                         setCategoryType(value as CategoryMapKey);
-                        form.setValue("category", "");
+                        form.setValue("category", "world-news");
                       }}
                       value={field.value || "news"}
                       className="flex items-center gap-16"
@@ -275,7 +356,9 @@ const AddNewsForm = () => {
                   <FormItem>
                     <FormLabel>Category</FormLabel>
                     <Select
-                      onValueChange={field.onChange}
+                      onValueChange={(value) =>
+                        field.onChange(value as Category)
+                      }
                       value={field.value}
                       defaultValue=""
                     >
@@ -285,14 +368,15 @@ const AddNewsForm = () => {
                       <SelectContent>
                         <SelectGroup>
                           <SelectLabel>Category</SelectLabel>
-                          {categoryMap[categoryType]?.map((cat, idx) => (
-                            <SelectItem
-                              key={idx}
-                              value={cat.toLowerCase().replace(/\s/g, "-")}
-                            >
-                              {cat}
-                            </SelectItem>
-                          ))}
+                          {categoryMap &&
+                            categoryMap[categoryType].map((cat, idx) => (
+                              <SelectItem
+                                key={idx}
+                                value={cat.toLowerCase().replace(/\s/g, "-")}
+                              >
+                                {cat}
+                              </SelectItem>
+                            ))}
                         </SelectGroup>
                       </SelectContent>
                     </Select>
@@ -375,18 +459,18 @@ const AddNewsForm = () => {
             />
           </div>
 
-          {/* news description */}
-          <div>
+
+          <div className="mt-20">
             <FormField
               control={form.control}
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel>Post</FormLabel>
                   <FormControl>
-                    <QuillEditor
+                    <RichTextEditor
                       value={field.value}
-                      onChange={field.onChange}
+                      onChange={(value) => field.onChange(value)}
                     />
                   </FormControl>
                   <FormMessage />
@@ -401,11 +485,23 @@ const AddNewsForm = () => {
               type="submit"
               className="w-full text-xl font-medium font-title text-news-white-bg bg-news-dark p-7"
             >
-              {isLoading ? "Loading..." : "Add News"}
+              Add News
             </Button>
           </div>
         </form>
       </Form>
+
+      <Dialog open={isModalOpen} onOpenChange={setModalOpen}>
+        {previewData && (
+          <NewsPreviewModal
+            newsData={previewData}
+            thumbnailPreviewUrl={thumbnailPreview}
+            onPost={() => handleFinalSubmit("published")}
+            onSaveDraft={() => handleFinalSubmit("unpublished")}
+            loadingAction={loadingAction}
+          />
+        )}
+      </Dialog>
     </div>
   );
 };

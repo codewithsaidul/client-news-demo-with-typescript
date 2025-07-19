@@ -1,17 +1,17 @@
 "use client";
 import EditForm from "@/components/dashboard/updateNews/EditForm";
 import LoadingSkeleton from "@/components/loading/LoadingSkeleton";
-import { useGetSingleNewsQuery } from "@/features/news/getSingleNews/singleNewsAPI";
+import { useGetSingleDraftQuery } from "@/features/news/getSingleDraft/getSingleDraftAPI";
 import { useParams } from "next/navigation";
 import { useEffect } from "react";
 
-const EditNews = () => {
+const UpdateDraft = () => {
   const { slug } = useParams();
   const {
     data: singleNews,
     isLoading,
     refetch,
-  } = useGetSingleNewsQuery(slug as string, {
+  } = useGetSingleDraftQuery(slug as string, {
     refetchOnMountOrArgChange: true,
     skip: false,
   });
@@ -32,22 +32,21 @@ const EditNews = () => {
     );
   }
 
-
-   if (!singleNews) {
+  if (!singleNews) {
     return <div>Error: Could not find the article.</div>;
   }
 
   return (
     <div className="p-5">
       <div className="border-b pb-5">
-        <h2 className="text-4xl font-title font-bold">Update News</h2>
+        <h2 className="text-4xl font-title font-bold">Re-post Draft News</h2>
       </div>
 
       <div className="mt-16">
-        <EditForm singleNews={singleNews} actionType="update" />
+        <EditForm singleNews={singleNews} actionType="post" />
       </div>
     </div>
   );
 };
 
-export default EditNews;
+export default UpdateDraft;
