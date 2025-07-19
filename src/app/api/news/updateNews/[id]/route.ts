@@ -12,8 +12,7 @@ export const PATCH = async (req: NextRequest, { params }: TDeleteUserContext) =>
     // get news data from client side
     const updateData = await req.json();
 
-    const { slug: reqSLug } = await params;
-    const query = { slug: reqSLug }
+    const { id } = await params;
 
 
 
@@ -22,16 +21,19 @@ export const PATCH = async (req: NextRequest, { params }: TDeleteUserContext) =>
 
 
     const updateDoc = {
-      $set: updateData,
+      $set: updateData
     };
 
 
 
 
     // insert news data on db
-    const result = await News.updateOne(query, updateDoc);
+    const result = await News.findByIdAndUpdate(id, updateDoc, {
+      new: true,
+      runValidators: true
+    });
 
-    return NextResponse.json(result, { status: 200 });
+    return NextResponse.json({ success: true, data: result}, { status: 200 });
   } catch {
     return NextResponse.json(
       { error: "Something went wrong" },

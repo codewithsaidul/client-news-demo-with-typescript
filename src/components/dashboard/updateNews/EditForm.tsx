@@ -1,4 +1,5 @@
 "use client";
+import RichTextEditor from "@/components/RichTextEditor/TextEditor";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,39 +23,33 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { categoryMap, CategoryMapKey } from "@/constants/data";
+import { useDraftToRePostMutation } from "@/features/news/draftToRePost/draftToRePostAPI";
 import { useUpdateNewsMutation } from "@/features/news/update/updateNewsAPI";
 import { editFormSchema } from "@/schema/schema";
+import { INews } from "@/types/client/news.types";
+import { uploadToImgBB } from "@/utils/uploadImage";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
-import dynamic from "next/dynamic";
-import { INews } from "@/types/client/news.types";
-import { uploadToImgBB } from "@/utils/uploadImage";
-
-
-
-// ✅ Dynamically import with SSR disabled
-const QuillEditor = dynamic(
-  () => import("../addNews/QuillEditor"),
-  { ssr: false }
-);
 
 interface UpdateNewsParams {
-  singleNews: INews
+  singleNews: INews;
+  actionType: "post" | "update";
 }
 
-
-const EditForm = ({ singleNews }: UpdateNewsParams) => {
+const EditForm = ({ singleNews, actionType }: UpdateNewsParams) => {
   const [tags, setTags] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [inputValue, setInputValue] = useState("");
   const [categoryType, setCategoryType] = useState<CategoryMapKey>(
     singleNews?.newsType || "news"
   );
+
   const [updateNews] = useUpdateNewsMutation();
+  const [draftToRePost] = useDraftToRePostMutation();
   const router = useRouter();
 
   // get the react hook form with default values
@@ -67,7 +62,7 @@ const EditForm = ({ singleNews }: UpdateNewsParams) => {
       tags: [],
       category: singleNews?.category || "",
       categoryType: singleNews?.newsType || "",
-      status: singleNews?.status ||"unpublished",
+      status: singleNews?.status || "unpublished",
       priority: "isFeatured",
     },
   });
@@ -117,7 +112,6 @@ const EditForm = ({ singleNews }: UpdateNewsParams) => {
     form.setValue("tags", updatedTags, { shouldValidate: true }); // Sync immediately
   };
 
-
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     setIsLoading(true);
     let imgUrl = singleNews.thumbnail; // thumbnail url from db
@@ -134,33 +128,50 @@ const EditForm = ({ singleNews }: UpdateNewsParams) => {
     // slug: slugify(values.title),
     const newsData = {
       title: values.title,
-      thumbnail: imgUrl,
+      thumbnail: imgUrl as string,
       description: values.description,
       tags: values.tags,
       category: values.category,
       newsType: values.categoryType,
       status: values.status,
       priority: values.priority,
+      author: singleNews.author,
     };
 
-
-    
     try {
-      
-      const res = await updateNews({ slug: singleNews.slug, newsData }).unwrap();
+      let res;
 
+      if (actionType === "post") {
+        res = await draftToRePost({
+          id: singleNews._id,
+          data: newsData,
+        }).unwrap();
+      } else {
+        res = await updateNews({ id: singleNews._id, newsData }).unwrap();
+      }
 
-      if (res.acknowledged && res.modifiedCount > 0) {
+      const message =
+        actionType === "post"
+          ? "News has been re-published successfully!"
+          : "News has been updated successfully";
+
+      if (res.success || res.message === "News has been added successfully") {
         Swal.fire({
-          title: "News update successfully!",
+          title: "successfully!",
+          text: message,
           icon: "success",
         });
         setIsLoading(false);
         router.push("/dashboard/allNews");
       }
     } catch {
+      const errorMessage =
+        actionType === "post"
+          ? "Failed to re-publish the news!"
+          : "Failed to update the news!";
       Swal.fire({
         title: "News update failed",
+        text: errorMessage,
         icon: "error",
       });
 
@@ -414,8 +425,8 @@ const EditForm = ({ singleNews }: UpdateNewsParams) => {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <QuillEditor
-                      value={field.value || ""}
+                    <RichTextEditor
+                      value={field.value}
                       onChange={field.onChange}
                     />
                   </FormControl>
@@ -431,7 +442,11 @@ const EditForm = ({ singleNews }: UpdateNewsParams) => {
               type="submit"
               className="w-full text-xl font-medium font-title text-news-white-bg bg-news-dark p-7"
             >
-              {isLoading ? "Loading..." : "Update News"}
+              {isLoading
+                ? "Loading..."
+                : actionType === "update"
+                ? "Update News"
+                : "Post News"}
             </Button>
           </div>
         </form>

@@ -15,6 +15,7 @@ import {
 import { useGetAllTrashedNewsQuery } from "@/features/news/allTrashedNews/allTrashedNewsAPI";
 import { usePermanentDeleteNewsMutation } from "@/features/news/permanentDelete/permanentDeleteNewsAPI";
 import { useRestoreNewsMutation } from "@/features/news/restoreNews/restoreNewsAPI";
+import { deleteNewsHandler } from "@/utils/deleteNews";
 import { stripHtml } from "@/utils/stripHtml";
 import { cn, dateFormater } from "@/utils/utils";
 import { ArchiveRestore, Trash2 } from "lucide-react";
@@ -71,24 +72,9 @@ const TrashedNews = () => {
 
   // ======================== handle news restore by ids ===========================
   const handleNewsRestore = async () => {
-    try {
-      const { data } = await restoreNews(selectedIds);
-      if (data?.success) {
-        Swal.fire({
-          title: "Restored!",
-          text: data.message,
-          icon: "success",
-        });
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Swal.fire({
-          title: "Failed",
-          text: error.message,
-          icon: "error",
-        });
-      }
-    }
+    deleteNewsHandler(selectedIds, restoreNews, () => {
+      setSelectedIds([])
+    })
   };
 
   // ================= permanent delete by id or ids =================
@@ -102,25 +88,10 @@ const TrashedNews = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Yes, delete it!",
     });
-    try {
-      if (result.isConfirmed) {
-        const { data } = await permanentDeleteNews(selectedIds);
-        if (data?.success) {
-          Swal.fire({
-            title: "Deleted!",
-            text: data.message,
-            icon: "success",
-          });
-        }
-      }
-    } catch (error) {
-      if (error instanceof Error) {
-        Swal.fire({
-          title: "Failed",
-          text: error.message,
-          icon: "error",
-        });
-      }
+    if (result.isConfirmed) {
+      deleteNewsHandler(selectedIds, permanentDeleteNews, () => {
+        setSelectedIds([])
+      })
     }
   };
 

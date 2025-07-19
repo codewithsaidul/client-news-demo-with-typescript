@@ -12,21 +12,22 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { useGetAllNewsQuery } from "@/features/news/allNews/allNewsAPI";
-import { useMoveNewsToTrashMutation } from "@/features/news/moveNewsToTrashAPI/moveNewsToTrashAPI";
+import { useDeleteDraftNewsMutation } from "@/features/news/deleteDraft/deleteDraftNewsAPI";
+import { useGetAllDratQuery } from "@/features/news/getAllDraft/getAllDraftAPI";
 import { deleteNewsHandler } from "@/utils/deleteNews";
 import { stripHtml } from "@/utils/stripHtml";
 import { cn, dateFormater } from "@/utils/utils";
 import { Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import Swal from "sweetalert2";
 import { twMerge } from "tailwind-merge";
 
-const DashboardAllNews = () => {
+const DraftNews = () => {
   const [page, setPage] = useState(1);
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
-  const { data, isLoading } = useGetAllNewsQuery({ page });
-  const [moveNewsToTrash] = useMoveNewsToTrashMutation();
+  const { data, isLoading } = useGetAllDratQuery({ page });
+  const [deleteDraftNews] = useDeleteDraftNewsMutation();
 
   if (isLoading) {
     return (
@@ -42,7 +43,7 @@ const DashboardAllNews = () => {
 
   if (!data) return <NoDataFound />;
 
-  const { data: allNews, pagination } = data;
+  const { data: trashedNews, pagination } = data;
 
   const handleSelectIds = (id: string) => {
     setSelectedIds((prevIds) =>
@@ -52,57 +53,36 @@ const DashboardAllNews = () => {
     );
   };
 
-  // const deleteNewsByID = async (slug: string) => {
-  //   const result = await Swal.fire({
-  //     title: "Are you sure?",
-  //     text: "You won't be able to revert this!",
-  //     icon: "warning",
-  //     showCancelButton: true,
-  //     confirmButtonColor: "#3085d6",
-  //     cancelButtonColor: "#d33",
-  //     confirmButtonText: "Yes, delete it!",
-  //   });
-  //   try {
-  //     if (result.isConfirmed) {
-  //       const { data } = await deleteNews(slug);
-  //       if (data.acknowledged && data.deletedCount > 0) {
-  //         Swal.fire({
-  //           title: "Deleted!",
-  //           text: "News has been deleted.",
-  //           icon: "success",
-  //         });
-  //       }
-  //     }
-  //   } catch {
-  //     Swal.fire({
-  //       title: "News deleted unsuccessfully!",
-  //       icon: "error",
-  //     });
-  //   }
-  // };
-
-  // "Select All" এর জন্য নতুন হ্যান্ডলার ফাংশন
-
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      // যদি চেক করা হয়, তাহলে বর্তমান পেজের সবগুলোর আইডি state-এ সেট করুন
-      const allIds = allNews.map((news) => news._id);
+      const allIds = trashedNews.map((news) => news._id);
       setSelectedIds(allIds);
     } else {
-      // যদি আন-চেক করা হয়, তাহলে state খালি করে দিন
       setSelectedIds([]);
     }
   };
 
   const numSelected = selectedIds.length;
-  const rowCount = allNews.length;
+  const rowCount = trashedNews.length;
   const itemsPerPage = 20;
 
-  // ================= move to trash by id =================
-  const moveToTrash = async () => {
-    deleteNewsHandler(selectedIds, moveNewsToTrash, () => {
-      setSelectedIds([]); // ✅ selectedIds reset
+  // ================= permanent delete by id or ids =================
+  const handlePermanentDeleteNews = async () => {
+    const result = await Swal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Yes, delete it!",
     });
+
+    if (result.isConfirmed) {
+      await deleteNewsHandler(selectedIds, deleteDraftNews, () => {
+        setSelectedIds([]); // ✅ selectedIds reset
+      });
+    }
   };
 
   return (
@@ -121,23 +101,29 @@ const DashboardAllNews = () => {
             <span>Selected All</span>
           </div>
 
-          <div
-            className={cn(
-              "flex transition-all duration-300 ease-in-out overflow-hidden", // বেস স্টাইল এবং ট্রানজিশন
-              {
-                "opacity-100 translate-x-0": selectedIds.length > 0, // দেখানোর জন্য স্টাইল
-                "opacity-0 translate-x-full pointer-events-none":
-                  selectedIds.length === 0, // লুকানোর জন্য স্টাইল
-              }
-            )}
-          >
-            <Button
-              onClick={moveToTrash}
-              className="bg-red-600 hover:bg-red-600/60 cursor-pointer"
-            >
-              <Trash2 /> <span>Delete All</span>
-            </Button>
-          </div>
+          {/* ============= delete & resote btn */}
+          {trashedNews.length > 0 && (
+            <div className="flex items-center gap-3">
+              {/* ================= delete btn */}
+              <div
+                className={cn(
+                  "flex transition-all duration-300 ease-in-out overflow-hidden", // বেস স্টাইল এবং ট্রানজিশন
+                  {
+                    "opacity-100 translate-x-0": selectedIds.length > 0, // দেখানোর জন্য স্টাইল
+                    "opacity-0 translate-x-full pointer-events-none":
+                      selectedIds.length === 0, // লুকানোর জন্য স্টাইল
+                  }
+                )}
+              >
+                <Button
+                  onClick={handlePermanentDeleteNews}
+                  className="bg-red-600 hover:bg-red-600/60 cursor-pointer"
+                >
+                  <Trash2 /> <span>Delete All</span>
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
         <Table>
           <TableHeader>
@@ -156,7 +142,7 @@ const DashboardAllNews = () => {
 
           {/* ================== table body ================ */}
           <TableBody>
-            {allNews.slice(0, itemsPerPage).map((news, index) => {
+            {trashedNews.slice(0, itemsPerPage).map((news, index) => {
               const isItemSelected = selectedIds.includes(news._id);
               const serialNumber = (page - 1) * itemsPerPage + index + 1;
               return (
@@ -190,9 +176,9 @@ const DashboardAllNews = () => {
                   </TableCell>
                   <TableCell>{dateFormater(news.createdAt)}</TableCell>
                   <TableCell className="flex gap-2">
-                    <Button className="bg-blue-500">
-                      <Link href={`/dashboard/editNews/${news.slug}`}>
-                        Edit
+                    <Button className="bg-green-500 hover:bg-green-500">
+                      <Link href={`/dashboard/updateDraft/${news.slug}`}>
+                        Re-Post
                       </Link>
                     </Button>
                   </TableCell>
@@ -202,16 +188,20 @@ const DashboardAllNews = () => {
           </TableBody>
         </Table>
 
-        <div>
-          <PaginationPage
-            page={page}
-            setPage={setPage}
-            totalPages={pagination?.totalPages}
-          />
-        </div>
+        {trashedNews.length === 0 && <NoDataFound />}
+
+        {trashedNews.length > 19 && (
+          <div>
+            <PaginationPage
+              page={page}
+              setPage={setPage}
+              totalPages={pagination?.totalPages}
+            />
+          </div>
+        )}
       </div>
     </div>
   );
 };
 
-export default DashboardAllNews;
+export default DraftNews;

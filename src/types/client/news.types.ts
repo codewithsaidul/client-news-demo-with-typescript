@@ -25,7 +25,7 @@ export type Priority = "none" | "isFeatured" | "isEditorsPick" | "isBreaking";
 export interface BaseNews {
   title: string;
   slug?: string;
-  thumbnail: string;
+  thumbnail?: string;
   category: Category;
   newsType: CategoryType;
   description?: string;
@@ -44,6 +44,7 @@ export interface IAddNewsForm extends BaseNews {
   tags: string[];
   status: Status;
   priority: Priority;
+  thumbnail?: string;
   author: {
     name?: string;
     email?: string;
@@ -71,6 +72,7 @@ export interface FeaturedNews {
 
 export interface HomePageSection extends BaseNews {
   slug: string;
+  thumbnail: string;
   author: {
     name?: string;
     email?: string;
@@ -134,6 +136,27 @@ export interface INewsDetails extends BaseNews {
   };
 }
 
+// প্রিভিউ মোডালের জন্য Props টাইপ
+export interface NewsPreviewModalProps {
+  newsData: {
+    title: string;
+    category: Category;
+    categoryType: CategoryType;
+    description: string;
+    tags: string[];
+    status: Status;
+    priority: Priority;
+    author: {
+      name?: string;
+      email?: string;
+    };
+  };
+  thumbnailPreviewUrl: string;
+  onPost: () => Promise<void>;
+  onSaveDraft: () => Promise<void>;
+  loadingAction: "post" | "draft" | null;
+}
+
 export interface INewsApiResponse {
   success: boolean;
   message: string;
@@ -152,7 +175,7 @@ export interface OverviewNews extends BaseNews {
   _id: string;
   description: string;
   createdAt: Date;
-  status: Status
+  status: Status;
 }
 
 // Describes the arguments you can pass to the query

@@ -3,6 +3,8 @@ import { z } from "zod";
 const passwordRegex =
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]{8,}$/;
 
+
+
 export const createUserSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email address"),
@@ -47,35 +49,31 @@ export const addFormSchema = z.object({
   tags: z.array(z.string()).min(1, { message: "At least one tag is required" }),
 
   // Category (dropdown)
-  category: z
-    .string()
-    .nonempty({ message: "Category is required" })
-    .refine(
-      (val) =>
-        [
-          "world-news",
-          "innovation",
-          "billionaires",
-          "entrepreneurs",
-          "leadership",
-          "investing",
-          "top-10",
-          "must-read",
-          "editors-picks",
-          "travel",
-          "lifestyle",
-          "wellness",
-          "property",
-          "style",
-          "motors",
-          "cover-story",
-          "exclusive",
-          "breaking-today",
-        ].includes(val),
-      {
-        message: "Invalid category selected",
-      }
-    ),
+  category: z.enum(
+    [
+      "world-news",
+      "innovation",
+      "billionaires",
+      "entrepreneurs",
+      "leadership",
+      "investing",
+      "top-10",
+      "must-read",
+      "editors-picks",
+      "travel",
+      "lifestyle",
+      "wellness",
+      "property",
+      "style",
+      "motors",
+      "cover-story",
+      "exclusive",
+      "breaking-today",
+    ],
+    {
+      required_error: "category is required",
+    }
+  ),
 
   // Status (dropdown)
   status: z.enum(["published", "unpublished"], {
@@ -90,6 +88,11 @@ export const addFormSchema = z.object({
   // Priority (radio group)
   priority: z.enum(["none", "isFeatured", "isEditorsPick", "isBreaking"], {
     required_error: "Priority type is required",
+  }),
+
+  author: z.object({
+    name: z.string().optional(),
+    email: z.string().optional(),
   }),
 });
 
@@ -158,3 +161,5 @@ export const editFormSchema = z.object({
     required_error: "Priority type is required",
   }),
 });
+
+export type NewsFormData = z.infer<typeof addFormSchema>;

@@ -1,7 +1,7 @@
 "use client";
 import { useGetCurrentUserQuery } from "@/features/user/currentUser/currentUserAPI";
 import axios from "axios";
-import { Trash2 } from "lucide-react";
+import { Construction, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -38,6 +38,12 @@ const navLinks = [
   },
   {
     id: 5,
+    title: "Draft",
+    href: "/dashboard/allDraftNews",
+    icon: <Construction size={32} />,
+  },
+  {
+    id: 6,
     title: "Trash News",
     href: "/dashboard/trashNews",
     icon: <Trash2 size={32} />,

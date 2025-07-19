@@ -6,16 +6,18 @@ export const moveNewsToTrashAPI = apiSlice.injectEndpoints({
       query: (selectedIds) => ({
         url: "/api/news/moveNewsToTrash",
         method: "POST",
-        body: { selectedIds }, 
+        body: { selectedIds },
       }),
       // এই অংশটি ক্যাশ আপডেটের জন্য সবচেয়ে গুরুত্বপূর্ণ
       invalidatesTags: (result, error, selectedIds) => [
-        // যে আইটেমগুলো ডিলিট হয়েছে, সেগুলোর প্রত্যেকটির ট্যাগকে ইনভ্যালিডেট করা হচ্ছে
-        ...selectedIds.map((id: string) => ({ type: "Trash News", id })),
+        ...selectedIds.flatMap((id: string) => [
+          { type: "News", id },
+          { type: "Trash News", id },
+        ]),
+        { type: "News", id: "LIST" },
         { type: "Trash News", id: "LIST" },
       ],
     }),
-
   }),
 });
 

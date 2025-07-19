@@ -1,25 +1,23 @@
-import { News } from "@/models/news.models";
-import "@/models/users.models";
+import { Draft } from "@/models/news.draft.models";
 import { TDeleteUserContext } from "@/types/server";
 import { connectDB } from "@/utils/connectDB";
+import { verifyRoles } from "@/utils/verifyRoles";
 import { NextRequest, NextResponse } from "next/server";
 
 export const GET = async (req: NextRequest, { params }: TDeleteUserContext) => {
   try {
+    const auth = verifyRoles(req, ["superadmin", "editor"]);
+    if (auth) return auth;
 
+    const { slug } = await params;
 
-     const { slug } = await params
 
     // connected with mongodb database
     await connectDB();
-    const query = { slug: slug}
+    const query = { slug: slug };
 
     // insert news data on db
-    const result = await News.findOne(query).populate("author");
-
-    // const user = await User.findById(result.author);
-
-    // console.log(user)
+    const result = await Draft.findOne(query);
 
     return NextResponse.json(result, { status: 200 });
   } catch {
