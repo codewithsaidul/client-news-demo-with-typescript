@@ -46,7 +46,7 @@ const Login = () => {
     const { email, password } = values;
     try {
       const { data, status } = await axios.post(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/login`,
+        `/api/auth/login`,
         { email, password }
       );
 
