@@ -36,6 +36,8 @@ const InnovationNews = () => {
   const { data: innovationNews, pagination } = data;
 
 
+  console.log(data)
+
   return (
     <div>
       {innovationNews.length > 0 ? (

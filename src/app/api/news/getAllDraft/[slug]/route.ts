@@ -1,10 +1,17 @@
 import { Draft } from "@/models/news.draft.models";
-import { TDeleteUserContext } from "@/types/server";
 import { connectDB } from "@/utils/connectDB";
 import { verifyRoles } from "@/utils/verifyRoles";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest, { params }: TDeleteUserContext) => {
+
+
+
+type TParams = Promise<{ slug: string }>;
+
+export const GET = async (
+  req: NextRequest,
+  { params }: { params: TParams }
+) => {
   try {
     const auth = verifyRoles(req, ["superadmin", "editor"]);
     if (auth) return auth;
@@ -20,7 +27,8 @@ export const GET = async (req: NextRequest, { params }: TDeleteUserContext) => {
     const result = await Draft.findOne(query);
 
     return NextResponse.json(result, { status: 200 });
-  } catch {
+  } catch (error) {
+    console.log(error)
     return NextResponse.json(
       { error: "Something went wrong" },
       { status: 500 }

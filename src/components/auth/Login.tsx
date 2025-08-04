@@ -58,7 +58,8 @@ const Login = () => {
         });
         router.push(callbackUrl);
       }
-    } catch {
+    } catch (error) {
+      console.log(error)
       Swal.fire({
           title: "Failed",
           text: "Login Failed",
@@ -69,8 +70,8 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-news-headline">
-      <div className="bg-news-dark shadow-2xl py-16 px-8 w-[40%] text-white">
+    <div className="flex justify-center items-center min-h-screen bg-news-headline max-md:px-6">
+      <div className="bg-news-dark shadow-2xl py-16 px-8 w-full min-md:w-[60%] min-lg:w-[40%] text-white">
         <div className="flex flex-col justify-center items-center mb-10 gap-y-5">
           <figure className="w-40 text-center">
             <Image
@@ -119,7 +120,7 @@ const Login = () => {
             />
 
             <div className="flex justify-center w-full">
-              <Button type="submit" className="text-xl font-title py-6 px-7">
+              <Button type="submit" className="text-xl font-title py-6 px-7 cursor-pointer">
                 Submit
               </Button>
             </div>

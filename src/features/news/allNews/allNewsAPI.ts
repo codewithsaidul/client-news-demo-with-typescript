@@ -7,6 +7,7 @@ export const allNewsAPI = apiSlice.injectEndpoints({
     getAllNews: builder.query<INewsApiResponse, IGetAllNewsParams>({
       query: ({
         page = 1,
+        limit = 20,
         category,
         newsType,
         priority = "none",
@@ -14,6 +15,7 @@ export const allNewsAPI = apiSlice.injectEndpoints({
       }) => {
         const params = new URLSearchParams();
         if (page) params.append("page", page.toString());
+        if (limit) params.append("limit", limit.toString());
         if (category) params.append("category", category);
         if (newsType) params.append("newsType", newsType);
         if (priority) params.append("priority", priority);

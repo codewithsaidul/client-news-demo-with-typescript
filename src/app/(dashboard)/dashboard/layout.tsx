@@ -1,9 +1,9 @@
+import SidebarLayout from "@/components/dashboard/DashboardLayout/DashboardLayout";
 import { ReduxProvider } from "@/provider/ReduxProvider";
-import "../../globals.css";
-import Sidebar from "@/components/dashboard/sidebar/Sidebar";
+import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
-import jwt from "jsonwebtoken"
+import "../../globals.css";
 
 export const metadata = {
   title:
@@ -15,7 +15,9 @@ export const metadata = {
   },
 };
 
-export default async function DashboardLayout({ children }: Readonly<{
+export default async function DashboardLayout({
+  children,
+}: Readonly<{
   children: React.ReactNode;
 }>) {
   const cookieStore = await cookies();
@@ -27,7 +29,7 @@ export default async function DashboardLayout({ children }: Readonly<{
   }
 
   try {
-    if (!process.env.JWT_SECRET) return "Token Not FOund"
+    if (!process.env.JWT_SECRET) return "Token Not FOund";
     jwt.verify(token, process.env.JWT_SECRET);
   } catch {
     // Invalid token holeo login e redirect
@@ -36,15 +38,8 @@ export default async function DashboardLayout({ children }: Readonly<{
 
   return (
     <ReduxProvider>
-      <div className="flex min-h-screen">
-        <div className="w-[20%] bg-news-dark pb-5">
-          <div className="sticky top-10 h-screen">
-            <Sidebar />
-          </div>
-        </div>
-
-        <div className="w-[80%]">{children}</div>
-      </div>
+      <SidebarLayout>{children}</SidebarLayout>
     </ReduxProvider>
   );
 }
+

@@ -2,6 +2,9 @@ import { News } from "@/models/news.models";
 import { ParamsServer } from "@/types/server";
 import { connectDB } from "@/utils/connectDB";
 import { NextRequest, NextResponse } from "next/server";
+import "@/models/users.models";
+import { Draft } from "@/models/news.draft.models";
+
 
 const categoryMap: { [key: string]: string[] } = {
   news: [
@@ -20,12 +23,12 @@ const categoryMap: { [key: string]: string[] } = {
 export const GET = async (req: NextRequest) => {
   try {
     const url = new URL(req.url);
-    const page = parseInt(url.searchParams.get("page") || "1");
+    const page = Number(url.searchParams.get("page") || "1");
+    const limit = Number(url.searchParams.get("limit") || "20");
     const priority = url.searchParams.get("priority") || "none";
     const category = url.searchParams.get("category") || "none";
     const newsType = url.searchParams.get("newsType") || "none";
     const authorEmail = url.searchParams.get("authorEmail") || "none";
-    const limit = 20;
     const skip = (page - 1) * limit;
 
     const query: ParamsServer = {};
@@ -64,26 +67,21 @@ export const GET = async (req: NextRequest) => {
       .skip(skip)
       .limit(limit);
 
-    const total = await News.countDocuments(query);
+    const publishedCount = await News.countDocuments(query);
 
+    const unpublishedCount = await Draft.countDocuments();
 
-    // Count published and unpublished with same filters
-    const publishedCount = await News.countDocuments({
-      ...query,
-      status: "published",
-    });
-    const unpublishedCount = total - publishedCount;
 
     return NextResponse.json(
       {
         data: result,
         pagination: {
-          total,
+          total: publishedCount + unpublishedCount,
           page,
           limit,
           published: publishedCount,
           unpublished: unpublishedCount,
-          totalPages: Math.ceil(total / limit),
+          totalPages: Math.ceil(publishedCount / limit),
         },
       },
       { status: 200 }

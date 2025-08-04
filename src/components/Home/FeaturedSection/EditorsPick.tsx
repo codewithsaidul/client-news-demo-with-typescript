@@ -1,14 +1,8 @@
-import { EditorPick } from "@/types/client/news.types";
+import { EditorPick, FeaturedNews } from "@/types/client/news.types";
 import Link from "next/link";
 
-const EditorsPick = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/news/allNews?priority=isEditorsPick`,
-    { next: { tags: ["news-list"] } }
-  );
-  const data = await res.json();
+const EditorsPick = async ({ featuredNews: editorsPick }: FeaturedNews) => {
 
-  const editorsPick = data.data;
 
   return (
     <div className="mt-10 min-md:mt-32">
@@ -22,10 +16,10 @@ const EditorsPick = async () => {
         {editorsPick.length > 0 &&
           editorsPick
             .slice(0, 3)
-            .map(({ _id, slug, category, title }: EditorPick) => (
+            .map(({ _id, slug, category, title, newsType }: EditorPick) => (
               <div key={_id} className="border-b mt-8 pb-5">
                 <Link
-                  href={`/news/${category}/${slug}`}
+                  href={`/${newsType}/${category}/${slug}`}
                   className="text-2xl text-news-text duration-500 hover:text-rose-500 hover:duration-500 line-clamp-2"
                 >
                   {title}

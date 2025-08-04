@@ -1,6 +1,10 @@
 import { News } from "@/models/news.models";
 import { connectDB } from "@/utils/connectDB";
 import { NextRequest, NextResponse } from "next/server";
+import "@/models/users.models";
+
+
+
 
 export const GET = async (req: NextRequest) => {
   try {
@@ -18,7 +22,7 @@ export const GET = async (req: NextRequest) => {
 
     // connecting with mongodb
     await connectDB();
-    const result = await News.find(query).sort({ createdAt: -1 }).skip(skip).limit(limit);
+    const result = await News.find(query).populate("author").sort({ createdAt: -1 }).skip(skip).limit(limit);
 
     const total = await News.countDocuments(query);
 

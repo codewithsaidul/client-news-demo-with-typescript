@@ -8,6 +8,7 @@ export const uploadToImgBB = async (file: File) => {
     body: formData,
   });
 
+
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`ImgBB upload failed with status ${res.status}: ${text}`);

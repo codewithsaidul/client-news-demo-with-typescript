@@ -1,9 +1,9 @@
-import { HomeNewsProps } from "@/types/client/news.types"
+import { HomeNewsProps } from "@/types/client/news.types";
 import { dateFormater } from "@/utils/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-const TopNewsSection = ( { allNews }: HomeNewsProps ) => {
+const TopNewsSection = ({ allNews }: HomeNewsProps) => {
   return (
     <div className="grid w-full grid-cols-1 gap-5 mt-16 sm:grid-cols-2">
       {allNews.slice(1, 5).map((news, index) => (
@@ -14,7 +14,7 @@ const TopNewsSection = ( { allNews }: HomeNewsProps ) => {
           {/* ===================== image ========================== */}
           <figure className="relative w-full overflow-hidden aspect-square max-w-32 max-h-32">
             <Image
-              src={news.thumbnail}
+              src={news.thumbnail as string}
               alt={news.title}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
@@ -47,7 +47,7 @@ const TopNewsSection = ( { allNews }: HomeNewsProps ) => {
         </div>
       ))}
     </div>
-  )
-}
+  );
+};
 
-export default TopNewsSection
+export default TopNewsSection;

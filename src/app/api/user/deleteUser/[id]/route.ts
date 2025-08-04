@@ -1,14 +1,16 @@
 import User from "@/models/users.models";
-import { ITokenPayload, TDeleteUserContext } from "@/types/server";
+import { ITokenPayload } from "@/types/server";
 import { connectDB } from "@/utils/connectDB";
 import { verifyRoles } from "@/utils/verifyRoles";
 import { verifyToken } from "@/utils/verifyToken";
 import { ObjectId } from "mongodb";
 import { NextRequest, NextResponse } from "next/server";
 
+type TParams = Promise<{ id: string }>;
+
 export const DELETE = async (
   req: NextRequest,
-  { params }: TDeleteUserContext
+  { params }: { params: TParams }
 ) => {
   try {
     // ✅ Only superadmins can delete users
@@ -47,7 +49,7 @@ export const DELETE = async (
     // We can now safely access the email property.
     const requesterEmail = (tokenResult.decoded as ITokenPayload).email;
 
-    const { id } = params;
+    const { id } = await params;
 
     if (!id) {
       return NextResponse.json(

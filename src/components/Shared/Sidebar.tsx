@@ -1,7 +1,6 @@
 "use client";
-import { navMenuList, socialLinks } from "@/constants/data";
+import { navMenuList } from "@/constants/data";
 import { ISideBar } from "@/types/client/index.types";
-import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import NavLink from "./NavLink";
 
@@ -27,21 +26,6 @@ const Sidebar = ({ isOpen, setIsOpen }: ISideBar) => {
               />
             ))}
           </ul>
-        </div>
-
-        {/* ============ social links =============== */}
-        <div className="mt-20 mb-28 sm:mb-20 flex flex-wrap w-full items-center gap-5">
-          {socialLinks.map((social) => (
-            <Link
-              key={social.id}
-              href={social.link}
-              aria-label={social.name}
-              target="_blank"
-              className="text-2xl"
-            >
-              {social.icon}
-            </Link>
-          ))}
         </div>
       </div>
     </div>

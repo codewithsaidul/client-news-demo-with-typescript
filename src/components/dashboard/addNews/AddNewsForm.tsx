@@ -219,7 +219,7 @@ const AddNewsForm = () => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onPreview)}
-          className="bg-white shadow-lg w-[70%] p-10 space-y-10"
+          className="bg-white shadow-lg w-full lg:w-[90%] xl:w-[70%] p-6 lg:p-10 space-y-10"
         >
           {/* news title */}
           <div>
@@ -318,7 +318,7 @@ const AddNewsForm = () => {
                         form.setValue("category", "world-news");
                       }}
                       value={field.value || "news"}
-                      className="flex items-center gap-16"
+                      className="flex max-sm:flex-wrap items-center gap-5 mt-5 min-sm:gap-16"
                     >
                       <div className="flex items-center gap-x-3">
                         <RadioGroupItem value="news" />
@@ -345,7 +345,7 @@ const AddNewsForm = () => {
           </div>
 
           {/* news category & status */}
-          <div className="flex items-center gap-5">
+          <div className="flex max-sm:flex-wrap  items-center gap-5">
             {/* news category */}
             {/* Category */}
             <div className="w-full">
@@ -433,7 +433,7 @@ const AddNewsForm = () => {
                     <RadioGroup
                       onValueChange={field.onChange}
                       value={field.value}
-                      className="flex items-center gap-16"
+                      className="flex max-sm:flex-wrap items-center gap-5 mt-5 min-sm:gap-16"
                     >
                       <div className="flex items-center gap-x-3">
                         <RadioGroupItem value="none" />

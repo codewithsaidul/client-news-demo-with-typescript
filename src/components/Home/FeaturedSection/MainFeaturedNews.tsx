@@ -14,7 +14,7 @@ const MainFeaturedNews = ({ featuredNews }: FeaturedNews) => {
         <Link href={`/${newsType}/${category}/${slug}`} className="w-full">
           <figure className="w-full relative aspect-video  max-h-[300px] sm:max-h-[500px] overflow-hidden">
             <Image
-              src={thumbnail}
+              src={thumbnail as string}
               alt={title}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"

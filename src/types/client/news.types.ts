@@ -1,3 +1,5 @@
+import React from "react";
+
 export type Category =
   | "world-news"
   | "innovation"
@@ -66,8 +68,17 @@ export interface INews extends BaseNews {
   createdAt: Date;
 }
 
+export interface Featured {
+  featuredNews: INews[];
+  children: React.ReactNode
+}
+
 export interface FeaturedNews {
   featuredNews: INews[];
+}
+
+export interface HeroProps {
+  hero: INews[]
 }
 
 export interface HomePageSection extends BaseNews {
@@ -181,6 +192,7 @@ export interface OverviewNews extends BaseNews {
 // Describes the arguments you can pass to the query
 export interface IGetAllNewsParams {
   page?: number;
+  limit?: number;
   category?: string;
   newsType?: string;
   priority?: string;

@@ -184,7 +184,7 @@ const EditForm = ({ singleNews, actionType }: UpdateNewsParams) => {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="bg-white shadow-lg w-[70%] p-10 space-y-10"
+          className="bg-white shadow-lg w-full lg:w-[90%] xl:w-[70%] p-6 lg:p-10 space-y-10"
         >
           {/* news title */}
           <div>
@@ -283,7 +283,7 @@ const EditForm = ({ singleNews, actionType }: UpdateNewsParams) => {
                         form.setValue("category", "");
                       }}
                       value={field.value || categoryType}
-                      className="flex items-center gap-16"
+                      className="flex max-sm:flex-wrap items-center gap-5 mt-5 min-sm:gap-16"
                     >
                       <div className="flex items-center gap-x-3">
                         <RadioGroupItem value="news" />
@@ -310,7 +310,7 @@ const EditForm = ({ singleNews, actionType }: UpdateNewsParams) => {
           </div>
 
           {/* news category & status */}
-          <div className="flex items-center gap-5">
+          <div className="flex max-sm:flex-wrap  items-center gap-5">
             {/* news category */}
             <div className="w-full">
               <FormField
@@ -390,7 +390,7 @@ const EditForm = ({ singleNews, actionType }: UpdateNewsParams) => {
                     <RadioGroup
                       onValueChange={field.onChange}
                       value={field.value}
-                      className="flex items-center gap-16"
+                      className="flex max-sm:flex-wrap items-center gap-5 mt-5 min-sm:gap-16"
                     >
                       <div className="flex items-center gap-x-3">
                         <RadioGroupItem value="none" />

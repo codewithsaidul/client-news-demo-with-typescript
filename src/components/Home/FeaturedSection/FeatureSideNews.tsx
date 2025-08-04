@@ -16,7 +16,7 @@ const FeatureSideNews = ({ featuredNews }: FeaturedNews) => {
             >
               <figure className="relative w-full aspect-square max-w-32 max-h-24">
                 <Image
-                  src={news.thumbnail}
+                  src={news.thumbnail as string}
                   alt={news.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
