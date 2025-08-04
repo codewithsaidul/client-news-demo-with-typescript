@@ -18,22 +18,21 @@ export const POST = async (req: NextRequest) => {
 
     const postData = {
       ...data,
-      status: "published"
-    }
+      status: "published",
+    };
 
     // insert news data on db
     const result = await News.create(postData);
-
 
     if (result) {
       revalidateTag("news-list");
       revalidatePath("/");
 
-       // --- রি-ভ্যালিডেশন লজিক এখানেই শুরু ---
+      // --- রি-ভ্যালিডেশন লজিক এখানেই শুরু ---
 
       // ধাপ ২: সফলভাবে সেভ হওয়ার পর, রি-ভ্যালিডেশন ট্রিগার করুন
       if (result) {
-        const domain = process.env.NEXT_BASE_URL
+        const domain = process.env.NEXT_PUBLIC_BASE_URL;
 
         const revalidationUrl = `${domain}/api/revalidate`;
         const secret = process.env.REVALIDATION_TOKEN;
@@ -61,7 +60,6 @@ export const POST = async (req: NextRequest) => {
       }
       // --- রি-ভ্যালিডেশন লজিক এখানেই শেষ ---
 
-      
       return NextResponse.json({ acknowledged: true, data }, { status: 200 }); // ✅ send full data
     } else {
       return NextResponse.json({ acknowledged: false }, { status: 500 });

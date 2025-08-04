@@ -30,7 +30,7 @@ export const DELETE = async (req: NextRequest) => {
     // --- রি-ভ্যালিডেশন লজিক এখানেই শুরু ---
 
     // ধাপ ২: সফলভাবে সেভ হওয়ার পর, রি-ভ্যালিডেশন ট্রিগার করুন
-    const domain = process.env.NEXT_BASE_URL;
+    const domain = process.env.NEXT_PUBLIC_BASE_URL;
 
     const revalidationUrl = `${domain}/api/revalidate`;
     const secret = process.env.REVALIDATION_TOKEN;
