@@ -25,7 +25,7 @@ export const registerAdminAPI = apiSlice.injectEndpoints({
               draft.unshift({
                 ...adminData,
                 _id: tempId,
-                createdAt: new Date().toISOString(),
+                createdAt: new Date(),
               });
             }
           )

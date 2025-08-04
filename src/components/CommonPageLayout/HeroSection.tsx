@@ -22,7 +22,7 @@ const HeroSection = ({ news }: PageHeroProps) => {
       <Link href="#" className="w-full min-[900px]:w-[60%]">
         <figure className="relative w-full max-h-[600px] aspect-square overflow-hidden">
           <Image
-            src={news.thumbnail}
+            src={news.thumbnail as string}
             alt={news.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"

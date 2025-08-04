@@ -2,19 +2,9 @@ import BreakingBanner from "@/components/HomeSections/BreakingBanner";
 import NewsSection from "@/components/HomeSections/NewsSection";
 import TopNewsSection from "@/components/HomeSections/TopNewsSection";
 import Heading from "@/components/SectionHeading/Heading";
+import { HomeNewsProps } from "@/types/client/news.types";
 
-const LifeSection = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/news/allNews?page=1&newsType=life&priority=none`,
-    { next: { tags: ["news-list"] } }
-  );
-
-  const data = await res.json();
-
-  const lifeNews = data?.data;
-
-  // console.log(lifeNews)
-
+const LifeSection = async ({ allNews: lifeNews }: HomeNewsProps) => {
   return (
     <div className="max-[450px]:mt-60 max-[600px]:mt-60 mt-56">
       {lifeNews.length > 4 && (

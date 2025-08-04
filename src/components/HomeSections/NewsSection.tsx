@@ -3,7 +3,7 @@ import { dateFormater } from "@/utils/utils";
 import Image from "next/image";
 import Link from "next/link";
 
-const NewsSection = ( { allNews }: HomeNewsProps ) => {
+const NewsSection = ({ allNews }: HomeNewsProps) => {
   return (
     <div className="min-[500px]:p-4 bg-news-white-bg xl:shadow-[0_0px_4px_rgba(0,0,0,0.15)] rounded-lg h-fit">
       <div className="flex flex-col w-full gap-5 sm:flex-row xl:flex-col">
@@ -11,7 +11,7 @@ const NewsSection = ( { allNews }: HomeNewsProps ) => {
           <div key={index} className="w-full pr-4">
             <figure className="relative w-full aspect-video max-h-[300px]">
               <Image
-                src={news.thumbnail}
+                src={news.thumbnail as string}
                 alt={news.title}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
@@ -41,7 +41,7 @@ const NewsSection = ( { allNews }: HomeNewsProps ) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NewsSection
+export default NewsSection;

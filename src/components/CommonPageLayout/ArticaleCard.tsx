@@ -15,7 +15,7 @@ const ArticaleCard = ({ allNews }: PageCardProps) => {
             <div className="w-[20%]">
               <figure className="relative w-full overflow-hidden max-h-60 aspect-square">
                 <Image
-                  src={news.thumbnail}
+                  src={news.thumbnail as string}
                   alt={news.title}
                   fill
                   sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

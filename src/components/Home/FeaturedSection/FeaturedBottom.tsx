@@ -15,7 +15,7 @@ const FeatureBottom = ({
       <Link href={`/${newsType}/${category}/${slug}`} className="">
         <figure className="w-full relative aspect-video max-h-[300px] max-lg:hidden">
           <Image
-            src={thumbnail}
+            src={thumbnail as string}
             alt={title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"

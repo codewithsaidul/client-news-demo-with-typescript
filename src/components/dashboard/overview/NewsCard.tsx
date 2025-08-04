@@ -14,14 +14,14 @@ const NewsCard = ( { published, totalNews, unpublished }: NewsCardProps ) => {
 
 
   return (
-    <div className="grid grid-cols-3 gap-7">
+    <div className="grid grid-cols-1 min-[577px]:grid-cols-2 min-[840px]:grid-cols-3 gap-7">
       {/* ============ Card Item 1 ============= */}
       <div className="flex gap-5 bg-white border border-[#EDEDED]">
         <div className="p-5 bg-[#2E90FA]/20 flex items-center justify-center">
           <FaNewspaper size={36} color="#2E90FA" />
         </div>
 
-        <div className="text-center py-2">
+        <div className="text-center py-2 flex items-center gap-5 min-[840px]:flex-col min-[840px]:gap-0">
           <span className="text-2xl font-bold">{totalNews}</span>
           <h3 className="text-xl text-news-text">Total News</h3>
         </div>
@@ -39,7 +39,7 @@ const NewsCard = ( { published, totalNews, unpublished }: NewsCardProps ) => {
           />
         </div>
 
-        <div className="text-center py-2">
+        <div className="text-center py-2 flex items-center gap-5 min-[840px]:flex-col min-[840px]:gap-0">
           <span className="text-2xl font-bold">{published}</span>
           <h3 className="text-xl text-news-text">Published</h3>
         </div>
@@ -57,9 +57,9 @@ const NewsCard = ( { published, totalNews, unpublished }: NewsCardProps ) => {
           />
         </div>
 
-        <div className="text-center py-2">
+        <div className="text-center py-2 flex items-center gap-5 min-[840px]:flex-col min-[840px]:gap-0">
           <span className="text-2xl font-bold">{unpublished}</span>
-          <h3 className="text-xl text-news-text">Unublished</h3>
+          <h3 className="text-xl text-news-text">Unpublished</h3>
         </div>
       </div>
     </div>

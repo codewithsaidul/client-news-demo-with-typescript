@@ -2,16 +2,9 @@ import BreakingBanner from "@/components/HomeSections/BreakingBanner";
 import NewsSection from "@/components/HomeSections/NewsSection";
 import TopNewsSection from "@/components/HomeSections/TopNewsSection";
 import Heading from "@/components/SectionHeading/Heading";
+import { HomeNewsProps } from "@/types/client/news.types";
 
-const EntrepreneursSection = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/news/allNews?page=1&newsType=news&category=entrepreneurs&priority=none`,
-    { next: { tags: ["news-list"] } }
-  );
-
-  const data = await res.json();
-
-  const entrepreneursNews = data?.data;
+const EntrepreneursSection = async ( { allNews: entrepreneursNews}: HomeNewsProps) => {
 
   return (
     <div className="mt-20">

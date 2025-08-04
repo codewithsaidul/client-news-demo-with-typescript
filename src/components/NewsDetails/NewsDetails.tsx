@@ -1,11 +1,46 @@
 "use client";
 import { useGetSingleNewsQuery } from "@/features/news/getSingleNews/singleNewsAPI";
-import { useParams } from "next/navigation";
+import { SocialLink } from "@/types/client/index.types";
 import { INewsDetails } from "@/types/client/news.types";
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
 import { dateFormater } from "@/utils/utils";
+import { CircleUserIcon } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useParams } from "next/navigation";
+import { FaFacebook, FaInstagram } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 import LoadingSkeleton from "../loading/LoadingSkeleton";
+import SimilarNews from "./SimilarNews";
+
+export const socialLinks: SocialLink[] = [
+  {
+    id: 1,
+    name: "facebook",
+    icon: <FaFacebook size={20} color="#000" />,
+    link: "https://www.facebook.com",
+  },
+  {
+    id: 2,
+    name: "twitter",
+    icon: <FaXTwitter size={20} color="#000" />,
+    link: "https://www.twitter.com",
+  },
+  {
+    id: 3,
+    name: "instagram",
+    icon: <FaInstagram size={20} color="#000" />,
+    link: "https://www.instagram.com",
+  },
+];
+
+const topicsData = [
+  { name: "Innovation", href: "/category/innovation" },
+  { name: "Entrepreneurs", href: "/category/entrepreneurs" },
+  { name: "Leadership", href: "/category/leadership" },
+  { name: "Investing", href: "/category/investing" },
+  { name: "Billionaires", href: "/category/billionaires" },
+];
 
 const NewsDetails = () => {
   const { slug } = useParams();
@@ -33,9 +68,11 @@ const NewsDetails = () => {
 
   const {
     title,
+    slug: newsSlug,
     description,
     thumbnail,
-    tags,
+    newsType,
+    // tags,
     category,
     createdAt,
     author,
@@ -77,47 +114,109 @@ const NewsDetails = () => {
   // });
 
   return (
-    <div className="mt-20">
+    <div className="mt-32">
       <div>
-        <figure className="relative aspect-video w-full max-h-[300px] md:max-h-[400px] lg:max-h-[500px] xl:max-h-[600px]">
-          <Image
-            src={thumbnail as string}
-            alt={title}
-            fill
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
-            className="object-center"
-          />
-        </figure>
-
-        <div className="px-4 sm:px-8 md:px-16 lg:px-20 xl:px-32">
-          <h1 className="my-10 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-title font-semibold">
+        <div className="px-4 sm:px-8 md:px-16">
+          <p className="text-base sm:text-lg font-normal font-title capitalize">
+            {category}
+          </p>
+          <h1 className="my-5 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-title font-semibold">
             {title}
           </h1>
 
-          <div className="flex items-center gap-5 mt-5">
-            <div className="flex items-center gap-3 flex-wrap">
+          <div className="flex items-center gap-2">
+            <div>
+              <CircleUserIcon size={24} />
+            </div>
+
+            <p className="text-base sm:text-lg font-normal">
+              By <span className="font-title font-bold">{author.name}</span>
+            </p>
+          </div>
+        </div>
+
+        <div className="px-4 sm:px-8 md:px-16 lg:px-20 xl:px-32 mt-8">
+          <div className="border-b flex justify-between items-center pb-5">
+            <span className="text-gray-500">{dateFormater(createdAt)}</span>
+
+            {/* <div className="flex items-center gap-3 flex-wrap">
               {tags.map((tag, index: number) => (
                 <span key={index} className="text-gray-400">
                   #{tag}
                 </span>
               ))}
+            </div> */}
+
+            <div className="flex  items-center gap-5">
+              {socialLinks.map((social) => (
+                <Link
+                  key={social.id}
+                  href={social.link}
+                  aria-label={social.name}
+                  target="_blank"
+                  className="text-2xl text-black"
+                >
+                  {social.icon}
+                </Link>
+              ))}
             </div>
           </div>
+        </div>
 
-          <div className="flex flex-wrap items-center gap-3 min-[525px]:gap-8 mt-3">
-            <p className="text-xl font-medium font-title capitalize">
-              Category: <span>{category}</span>
-            </p>
-            <p className="text-lg font-normal">
-              By <span className="font-title font-bold">{author.name}</span>
-            </p>
-            <span className="text-gray-500">{dateFormater(createdAt)}</span>
-          </div>
+        <div className="px-4 sm:px-8 md:px-16 lg:px-20 xl:px-32 mt-10">
+          {/* ===================== image ============================== */}
+          <figure className="relative aspect-video w-full max-h-[300px] min-h-[200px] md:max-h-[400px] lg:max-h-[500px] xl:max-h-[600px]">
+            <Image
+              src={thumbnail as string}
+              alt={title}
+              fill
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
+              className="object-center"
+            />
+          </figure>
 
+          {/* =============== description ====================== */}
           <div
             className="text-news-text text-lg mt-8 tiptap-content"
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
           />
+
+          {/* ================== similar News =============== */}
+          <div className="my-10">
+            <h2 className="text-3xl font-bold">More From Forbes</h2>
+            <SimilarNews
+              slug={newsSlug}
+              category={category}
+              newsType={newsType}
+            />
+          </div>
+
+          {/* ============ news detail footer ============= */}
+          <div className="border-t pt-10">
+            <div className="flex items-center gap-2">
+              <div>
+                <CircleUserIcon size={24} />
+              </div>
+
+              <p className="text-base sm:text-lg font-normal">
+                By <span className="font-title font-bold">{author.name}</span>
+              </p>
+            </div>
+
+            <div className="border-t border-b border-red-500 py-5 mt-10">
+              <div className="flex flex-wrap justify-center items-center gap-5">
+                {topicsData.map((topic, idx) => (
+                  <Link
+                    key={idx}
+                    href={topic.href}
+                    className="text-base md:text-lg hover:text-rose-500"
+                  >
+                    {topic.name}
+                  </Link>
+                ))}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

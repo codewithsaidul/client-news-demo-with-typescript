@@ -28,26 +28,31 @@ export const navMenuList: NavMenuList[] = [
 export const socialLinks: SocialLink[] = [
   {
     id: 1,
+    name: "facebook",
     icon: <FaFacebook size={28} color="#fff" />,
     link: "https://www.facebook.com",
   },
   {
     id: 2,
+    name: "twitter",
     icon: <FaXTwitter size={28} color="#fff" />,
     link: "https://www.twitter.com",
   },
   {
     id: 3,
+    name: "instagram",
     icon: <FaInstagram size={28} color="#fff" />,
     link: "https://www.instagram.com",
   },
   {
     id: 4,
+    name: "linkedin",
     icon: <FaLinkedin size={28} color="#fff" />,
     link: "https://www.linkedin.com",
   },
   {
     id: 5,
+    name: "youtube",
     icon: <FaYoutube size={28} color="#fff" />,
     link: "https://www.youtube.com",
   },

@@ -1,6 +1,7 @@
 import { Inter, Lora, Merriweather } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/provider/ReduxProvider";
+import CookieConsentBanner from "@/components/Shared/CookieConsentBanner";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -13,6 +14,8 @@ const merriWeather = Merriweather({
   subsets: ["latin"],
   weight: ["300", "400", "700", "900"],
 });
+
+
 const loraSerif = Lora({
   variable: "--font-lora",
   subsets: ["latin"],
@@ -37,7 +40,10 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${merriWeather.variable} ${loraSerif.variable} antialiased`}
       >
-        <ReduxProvider>{children}</ReduxProvider>
+        <ReduxProvider>
+          {children}
+          <CookieConsentBanner />
+        </ReduxProvider>
       </body>
     </html>
   );

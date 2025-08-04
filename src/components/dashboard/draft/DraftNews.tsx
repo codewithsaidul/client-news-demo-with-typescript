@@ -43,7 +43,7 @@ const DraftNews = () => {
 
   if (!data) return <NoDataFound />;
 
-  const { data: trashedNews, pagination } = data;
+  const { data: draftNews, pagination } = data;
 
   const handleSelectIds = (id: string) => {
     setSelectedIds((prevIds) =>
@@ -55,7 +55,7 @@ const DraftNews = () => {
 
   const handleSelectAllClick = (checked: boolean) => {
     if (checked) {
-      const allIds = trashedNews.map((news) => news._id);
+      const allIds = draftNews.map((news) => news._id);
       setSelectedIds(allIds);
     } else {
       setSelectedIds([]);
@@ -63,8 +63,10 @@ const DraftNews = () => {
   };
 
   const numSelected = selectedIds.length;
-  const rowCount = trashedNews.length;
+  const rowCount = draftNews.length;
   const itemsPerPage = 20;
+
+  console.log(draftNews)
 
   // ================= permanent delete by id or ids =================
   const handlePermanentDeleteNews = async () => {
@@ -102,7 +104,7 @@ const DraftNews = () => {
           </div>
 
           {/* ============= delete & resote btn */}
-          {trashedNews.length > 0 && (
+          {draftNews.length > 0 && (
             <div className="flex items-center gap-3">
               {/* ================= delete btn */}
               <div
@@ -142,7 +144,7 @@ const DraftNews = () => {
 
           {/* ================== table body ================ */}
           <TableBody>
-            {trashedNews.slice(0, itemsPerPage).map((news, index) => {
+            {draftNews.slice(0, itemsPerPage).map((news, index) => {
               const isItemSelected = selectedIds.includes(news._id);
               const serialNumber = (page - 1) * itemsPerPage + index + 1;
               return (
@@ -188,9 +190,9 @@ const DraftNews = () => {
           </TableBody>
         </Table>
 
-        {trashedNews.length === 0 && <NoDataFound />}
+        {draftNews.length === 0 && <NoDataFound />}
 
-        {trashedNews.length > 19 && (
+        {draftNews.length > 19 && (
           <div>
             <PaginationPage
               page={page}

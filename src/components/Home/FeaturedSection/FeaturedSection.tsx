@@ -1,19 +1,11 @@
 import Heading from "@/components/SectionHeading/Heading";
+import NoDataFound from "@/components/Shared/NoDataFound";
 import "@/models/users.models";
-import EditorsPick from "./EditorsPick";
+import { Featured } from "@/types/client/news.types";
 import FeatureSideNews from "./FeatureSideNews";
 import MainFeaturedNews from "./MainFeaturedNews";
-import NoDataFound from "@/components/Shared/NoDataFound";
 
-const FeaturedSection = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/news/allNews?priority=isFeatured`,
-    { next: { tags: ["news-list"] } }
-  );
-  const data = await res.json();
-
-  const featuredNews = data.data;
-
+const FeaturedSection = async ({ featuredNews, children }: Featured) => {
   return (
     <section className="mb-20">
       {featuredNews.length > 0 ? (
@@ -29,7 +21,7 @@ const FeaturedSection = async () => {
 
             <div className="lg:col-span-5 h-screen w-full">
               <FeatureSideNews featuredNews={featuredNews.slice(3, 5)} />
-              <EditorsPick />
+              {children}
             </div>
           </div>
         </div>

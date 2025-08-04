@@ -1,15 +1,12 @@
 "use client";
 import { useGetCurrentUserQuery } from "@/features/user/currentUser/currentUserAPI";
-import axios from "axios";
-import { Construction, Trash2 } from "lucide-react";
+import { ISideBar } from "@/types/client/index.types";
+import { Construction, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { FaHome, FaUsers } from "react-icons/fa";
 import { GiNewspaper } from "react-icons/gi";
-import { IoMdLogOut } from "react-icons/io";
 import { MdAddBox, MdDashboard } from "react-icons/md";
-import Swal from "sweetalert2";
 
 const navLinks = [
   {
@@ -50,28 +47,19 @@ const navLinks = [
   },
 ];
 
-const Sidebar = () => {
-  const router = useRouter();
+const Sidebar = ({ isOpen, setIsOpen }: ISideBar) => {
   const { data: user } = useGetCurrentUserQuery(undefined);
 
-
-  const handleLogout = async () => {
-    try {
-      await axios.post("/api/auth/logout");
-      router.push("/login");
-    } catch {
-      Swal.fire({
-        title: "Logout failed",
-        icon: "error",
-        draggable: true,
-      });
+  const handleCloseSidebar = () => {
+    if (isOpen) {
+      console.log("im desk")
+      setIsOpen(false)
     }
-  };
-
+  }
 
   return (
-    <div className="mt-16 px-8 flex flex-col justify-between h-[90vh]">
-      <div>
+    <div className="px-4 md:px-8 flex flex-col justify-between min-h-screen relative">
+      <div className="mt-16">
         <Link href="/">
           <Image
             src="/logo.webp"
@@ -87,7 +75,7 @@ const Sidebar = () => {
         <div className="mt-32">
           <ul className="flex flex-col gap-10">
             {navLinks.map((item) => (
-              <li key={item.id} className="border-b border-white/20 pb-3">
+              <li onClick={handleCloseSidebar} key={item.id} className="border-b border-white/20 pb-3">
                 <Link
                   href={item.href}
                   className="flex items-center gap-2 text-white text-2xl"
@@ -116,16 +104,15 @@ const Sidebar = () => {
         </div>
       </div>
 
-      {/* Logout */}
-      <div onClick={handleLogout}>
-        <p className="cursor-pointer text-white flex items-center gap-2 text-2xl">
-          <span>
-            <IoMdLogOut size={32} />
-          </span>
-
-          <span>Logout</span>
-        </p>
-      </div>
+      {/* close btn */}
+      {isOpen && (
+        <div
+          onClick={() => setIsOpen(false)}
+          className="absolute top-0 right-2 text-white cursor-pointer"
+        >
+          <X size={40} />
+        </div>
+      )}
     </div>
   );
 };

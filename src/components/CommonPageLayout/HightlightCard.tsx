@@ -11,7 +11,7 @@ const HightlightCard = ({ allNews }: PageCardProps) => {
           <Link href={`/${news.newsType}/${news.category}/${news.slug}`}>
             <figure className="relative aspect-square w-full max-h-[400px]  overflow-hidden rounded-lg">
               <Image
-                src={news.thumbnail}
+                src={news.thumbnail as string}
                 alt={news.title}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"

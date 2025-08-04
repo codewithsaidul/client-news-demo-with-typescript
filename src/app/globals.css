@@ -6,11 +6,11 @@
 
 @theme {
   --color-news-cta: #d7263d;
-  --color-news-headline: #111111;
+  --color-news-headline: #0c0c0c;
   --color-news-text: #444444;
   --color-news-white-bg: #fff;
   --color-news-section-bg: #f9f9f9;
-  --color-news-dark: #1e1e1e;
+  --color-news-dark: #090708;
   --font-body: var(--font-inter);
   --font-title: var(--font-merriweather);
   --font-banner-title: var(--font-lora);

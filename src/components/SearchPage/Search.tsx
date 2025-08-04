@@ -70,7 +70,7 @@ const Search = () => {
                   <figure className="max-[850px]:w-full max-[850px]:order-1 w-[20%]">
                     <Link href={`/${news.newsType}/${news.category}/${news.slug}`}>
                       <Image
-                        src={news.thumbnail}
+                        src={news.thumbnail as string}
                         alt={news.title}
                         width={300}
                         height={400}

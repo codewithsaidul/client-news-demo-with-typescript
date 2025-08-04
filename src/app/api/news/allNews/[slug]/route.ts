@@ -1,18 +1,17 @@
 import { News } from "@/models/news.models";
 import "@/models/users.models";
-import { TDeleteUserContext } from "@/types/server";
 import { connectDB } from "@/utils/connectDB";
 import { NextRequest, NextResponse } from "next/server";
 
-export const GET = async (req: NextRequest, { params }: TDeleteUserContext) => {
+type TParams = Promise<{ slug: string }>;
+
+export async function GET(req: NextRequest, { params }: { params: TParams }) {
   try {
-
-
-     const { slug } = await params
+    const { slug } = await params;
 
     // connected with mongodb database
     await connectDB();
-    const query = { slug: slug}
+    const query = { slug: slug };
 
     // insert news data on db
     const result = await News.findOne(query).populate("author");
@@ -28,4 +27,4 @@ export const GET = async (req: NextRequest, { params }: TDeleteUserContext) => {
       { status: 500 }
     );
   }
-};
+}

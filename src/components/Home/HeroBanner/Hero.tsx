@@ -1,21 +1,19 @@
 import NoDataFound from "@/components/Shared/NoDataFound";
+import { HeroProps } from "@/types/client/news.types";
 import { stripHtmlOnServer } from "@/utils/server-utils";
 import Image from "next/image";
 import Link from "next/link";
 
-const Hero = async () => {
-  const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}/api/news/allNews?priority=isBreaking`,
-    { next: { tags: ["news-list"] } }
-  );
+const Hero = async ({ hero }: HeroProps) => {
+  const breakingNews = hero[0];
 
-
-  const data = await res.json();
-  const breakingNews = data.data[0];
+  if (!breakingNews) {
+    return <div>Data nai</div>;
+  }
 
   return (
     <>
-      {data.data.length > 0 ? (
+      {hero.length > 0 ? (
         <section className="my-20 max-md:mb-60 h-auto lg:h-screen relative">
           <Link
             href={`/${breakingNews.newsType}/${breakingNews.category}/${breakingNews.slug}`}
@@ -23,7 +21,7 @@ const Hero = async () => {
           >
             <figure className="relative w-full aspect-square h-auto lg:aspect-auto lg:h-screen">
               <Image
-                src={breakingNews.thumbnail}
+                src={breakingNews.thumbnail as string}
                 alt={breakingNews.title}
                 fill
                 priority
@@ -46,7 +44,7 @@ const Hero = async () => {
               </span>
 
               {/* ========================= title ======================= */}
-              <h1 className="max-[430px]:text-xl max-[649px]:text-2xl min-[650px]:text-4xl min-[960px]:text-6xl mt-3 mb-7 font-bold font-title duration-500 hover:underline hover:duration-500 line-clamp-2">
+              <h1 className="max-[430px]:text-xl max-[649px]:text-2xl min-[650px]:text-4xl min-[960px]:text-6xl mt-3 mb-7 font-bold font-banner-title duration-500 hover:underline hover:duration-500 line-clamp-2">
                 {breakingNews.title}
               </h1>
 

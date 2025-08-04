@@ -9,7 +9,7 @@ const BreakingBanner = ({ news }: BreakingBannerProps) => {
     <div>
       <figure className="relative aspect-video w-full max-h-[300px] sm:max-h-[500px]">
         <Image
-          src={news?.thumbnail}
+          src={news.thumbnail as string}
           alt={news.title}
           fill
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
