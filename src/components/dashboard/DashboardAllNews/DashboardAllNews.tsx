@@ -1,5 +1,6 @@
 "use client";
 import LoadingSkeleton from "@/components/loading/LoadingSkeleton";
+import LinkShareModdal from "@/components/modal/LinkShareModdal";
 import NoDataFound from "@/components/Shared/NoDataFound";
 import PaginationPage from "@/components/Shared/PaginationPage";
 import { Button } from "@/components/ui/button";
@@ -17,7 +18,7 @@ import { useMoveNewsToTrashMutation } from "@/features/news/moveNewsToTrashAPI/m
 import { deleteNewsHandler } from "@/utils/deleteNews";
 import { stripHtml } from "@/utils/stripHtml";
 import { cn, dateFormater } from "@/utils/utils";
-import { Trash2 } from "lucide-react";
+import { Link as ShareLink, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -27,6 +28,8 @@ const DashboardAllNews = () => {
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const { data, isLoading } = useGetAllNewsQuery({ page });
   const [moveNewsToTrash] = useMoveNewsToTrashMutation();
+  const [open, setOpen] = useState<boolean>(false);
+  const [url, setUrl] = useState<string | null>(null);
 
   if (isLoading) {
     return (
@@ -195,11 +198,29 @@ const DashboardAllNews = () => {
                         Edit
                       </Link>
                     </Button>
+                    <Button
+                    onClick={() => {
+                      setUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/${news.newsType}/${news.category}/${news.slug}`)
+                      setOpen(true)
+                    }}
+                      className="bg-indigo-500 cursor-pointer"
+                    >
+                      <ShareLink />
+                    </Button>
                   </TableCell>
                 </TableRow>
               );
             })}
           </TableBody>
+
+          {/* ================ open link share modal ====================== */}
+          {url && (
+            <LinkShareModdal
+              url={url}
+              open={open}
+              setOpen={setOpen}
+            />
+          )}
         </Table>
 
         <div>
