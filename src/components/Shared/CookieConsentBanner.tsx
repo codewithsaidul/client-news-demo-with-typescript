@@ -1,7 +1,15 @@
-"use client"
-import CookieConsent from "react-cookie-consent"
+"use client";
+import CookieConsent from "react-cookie-consent";
 
 const CookieConsentBanner = () => {
+
+  const handleDecline = () => {
+    if (document) {
+      // Reject হলে reject cookie set করো (expire কম দিন)
+        document.cookie = "newsCookieConsent=false; path=/; max-age=86400"; // 1 দিন
+    }
+  } 
+
   return (
     <CookieConsent
       location="bottom"
@@ -9,7 +17,14 @@ const CookieConsentBanner = () => {
       declineButtonText="Reject"
       enableDeclineButton
       cookieName="newsCookieConsent"
-      style={{ background: "#0c0c0c", color: "white", display: "flex", alignContent: "center", alignItems: "center" }}
+      onDecline={handleDecline}
+      style={{
+        background: "#0c0c0c",
+        color: "white",
+        display: "flex",
+        alignContent: "center",
+        alignItems: "center",
+      }}
       buttonStyle={{ background: "#10b981", color: "#fff", fontSize: "13px" }}
       declineButtonStyle={{
         background: "#ef4444",
