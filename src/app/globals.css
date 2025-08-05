@@ -11,9 +11,8 @@
   --color-news-white-bg: #fff;
   --color-news-section-bg: #f9f9f9;
   --color-news-dark: #090708;
-  --font-body: var(--font-inter);
-  --font-title: var(--font-merriweather);
-  --font-banner-title: var(--font-lora);
+  --font-body: var(--font-switzer);
+  --font-title: var(--font-lora);
 }
 
 @theme inline {

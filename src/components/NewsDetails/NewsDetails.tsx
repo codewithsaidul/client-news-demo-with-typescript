@@ -1,6 +1,5 @@
 "use client";
 import { useGetSingleNewsQuery } from "@/features/news/getSingleNews/singleNewsAPI";
-import { SocialLink } from "@/types/client/index.types";
 import { INewsDetails } from "@/types/client/news.types";
 import { sanitizeHtml } from "@/utils/sanitizeHtml";
 import { dateFormater } from "@/utils/utils";
@@ -8,31 +7,8 @@ import { CircleUserIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams } from "next/navigation";
-import { FaFacebook, FaInstagram } from "react-icons/fa";
-import { FaXTwitter } from "react-icons/fa6";
 import LoadingSkeleton from "../loading/LoadingSkeleton";
 import SimilarNews from "./SimilarNews";
-
-export const socialLinks: SocialLink[] = [
-  {
-    id: 1,
-    name: "facebook",
-    icon: <FaFacebook size={20} color="#000" />,
-    link: "https://www.facebook.com",
-  },
-  {
-    id: 2,
-    name: "twitter",
-    icon: <FaXTwitter size={20} color="#000" />,
-    link: "https://www.twitter.com",
-  },
-  {
-    id: 3,
-    name: "instagram",
-    icon: <FaInstagram size={20} color="#000" />,
-    link: "https://www.instagram.com",
-  },
-];
 
 const topicsData = [
   { name: "Innovation", href: "/category/innovation" },
@@ -146,20 +122,6 @@ const NewsDetails = () => {
                 </span>
               ))}
             </div> */}
-
-            <div className="flex  items-center gap-5">
-              {socialLinks.map((social) => (
-                <Link
-                  key={social.id}
-                  href={social.link}
-                  aria-label={social.name}
-                  target="_blank"
-                  className="text-2xl text-black"
-                >
-                  {social.icon}
-                </Link>
-              ))}
-            </div>
           </div>
         </div>
 
