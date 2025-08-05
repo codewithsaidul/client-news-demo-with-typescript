@@ -2,7 +2,7 @@ import { Lora } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/provider/ReduxProvider";
 import CookieConsentBanner from "@/components/Shared/CookieConsentBanner";
-import { switzer } from "./font";
+import { switzer } from "../../public/font";
 
 
 
