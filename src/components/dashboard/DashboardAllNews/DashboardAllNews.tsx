@@ -171,7 +171,7 @@ const DashboardAllNews = () => {
                     />
                   </TableCell>
                   <TableCell className="font-medium">{serialNumber}</TableCell>
-                  <TableCell className="text-xl font-title font-semibold truncate max-w-[300px]">
+                  <TableCell className="text-xl news__title font-semibold truncate max-w-[300px]">
                     {news.title}
                   </TableCell>
                   <TableCell className="truncate max-w-[300px] overflow-hidden whitespace-nowrap text-ellipsis">
@@ -199,10 +199,12 @@ const DashboardAllNews = () => {
                       </Link>
                     </Button>
                     <Button
-                    onClick={() => {
-                      setUrl(`${process.env.NEXT_PUBLIC_BASE_URL}/${news.newsType}/${news.category}/${news.slug}`)
-                      setOpen(true)
-                    }}
+                      onClick={() => {
+                        setUrl(
+                          `${process.env.NEXT_PUBLIC_BASE_URL}/${news.newsType}/${news.category}/${news.slug}`
+                        );
+                        setOpen(true);
+                      }}
                       className="bg-indigo-500 cursor-pointer"
                     >
                       <ShareLink />
@@ -214,13 +216,7 @@ const DashboardAllNews = () => {
           </TableBody>
 
           {/* ================ open link share modal ====================== */}
-          {url && (
-            <LinkShareModdal
-              url={url}
-              open={open}
-              setOpen={setOpen}
-            />
-          )}
+          {url && <LinkShareModdal url={url} open={open} setOpen={setOpen} />}
         </Table>
 
         <div>

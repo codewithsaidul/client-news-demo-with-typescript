@@ -14,16 +14,14 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import Image from "next/image";
 import axios from "axios";
-import Swal from "sweetalert2";
+import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
+import Swal from "sweetalert2";
 
 // Validation schema for username and password
 const formSchema = z.object({
-  email: z
-    .string()
-    .nonempty({ message: "Email is required" }),
+  email: z.string().nonempty({ message: "Email is required" }),
   password: z.string().min(6, {
     message: "Password must be at least 6 characters.",
   }),
@@ -45,10 +43,10 @@ const Login = () => {
   const onSubmit: SubmitHandler<FieldValues> = async (values) => {
     const { email, password } = values;
     try {
-      const { data, status } = await axios.post(
-        `/api/auth/login`,
-        { email, password }
-      );
+      const { data, status } = await axios.post(`/api/auth/login`, {
+        email,
+        password,
+      });
 
       if (data?.message && status === 200) {
         Swal.fire({
@@ -59,13 +57,13 @@ const Login = () => {
         router.push(callbackUrl);
       }
     } catch (error) {
-      console.log(error)
+      console.log(error);
       Swal.fire({
-          title: "Failed",
-          text: "Login Failed",
-          icon: "error",
-          draggable: true,
-        });
+        title: "Failed",
+        text: "Login Failed",
+        icon: "error",
+        draggable: true,
+      });
     }
   };
 
@@ -83,12 +81,15 @@ const Login = () => {
             />{" "}
           </figure>
 
-          <h2 className="text-2xl font-title font-bold">
+          <h2 className="text-2xl news__title font-bold">
             Authorized Access Only
           </h2>
         </div>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 w-full">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-8 w-full"
+          >
             {/* Username field */}
             <FormField
               control={form.control}
@@ -120,7 +121,10 @@ const Login = () => {
             />
 
             <div className="flex justify-center w-full">
-              <Button type="submit" className="text-xl font-title py-6 px-7 cursor-pointer">
+              <Button
+                type="submit"
+                className="text-xl news__title py-6 px-7 cursor-pointer"
+              >
                 Submit
               </Button>
             </div>

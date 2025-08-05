@@ -24,7 +24,7 @@ const Overview = () => {
 
   return (
     <div className="mt-5 px-10">
-      <h1 className="text-4xl text-news-text font-medium font-title border-b pb-4">
+      <h1 className="text-4xl text-news-text font-medium news__title border-b pb-4">
         Dashboard
       </h1>
 

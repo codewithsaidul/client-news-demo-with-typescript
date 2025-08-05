@@ -73,8 +73,8 @@ const TrashedNews = () => {
   // ======================== handle news restore by ids ===========================
   const handleNewsRestore = async () => {
     deleteNewsHandler(selectedIds, restoreNews, () => {
-      setSelectedIds([])
-    })
+      setSelectedIds([]);
+    });
   };
 
   // ================= permanent delete by id or ids =================
@@ -90,8 +90,8 @@ const TrashedNews = () => {
     });
     if (result.isConfirmed) {
       deleteNewsHandler(selectedIds, permanentDeleteNews, () => {
-        setSelectedIds([])
-      })
+        setSelectedIds([]);
+      });
     }
   };
 
@@ -183,7 +183,7 @@ const TrashedNews = () => {
                     />
                   </TableCell>
                   <TableCell className="font-medium">{serialNumber}</TableCell>
-                  <TableCell className="text-xl font-title font-semibold truncate max-w-[300px]">
+                  <TableCell className="text-xl news__title font-semibold truncate max-w-[300px]">
                     {news.title}
                   </TableCell>
                   <TableCell className="truncate max-w-[300px] overflow-hidden whitespace-nowrap text-ellipsis">
@@ -217,10 +217,7 @@ const TrashedNews = () => {
           </TableBody>
         </Table>
 
-
-        {
-          trashedNews.length === 0 && <NoDataFound />
-        }
+        {trashedNews.length === 0 && <NoDataFound />}
 
         {trashedNews.length > 19 && (
           <div>

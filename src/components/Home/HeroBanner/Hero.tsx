@@ -44,7 +44,7 @@ const Hero = async ({ hero }: HeroProps) => {
               </span>
 
               {/* ========================= title ======================= */}
-              <h1 className="max-[430px]:text-xl max-[649px]:text-2xl min-[650px]:text-4xl min-[960px]:text-6xl mt-3 mb-7 font-bold font-title duration-500 hover:underline hover:duration-500 line-clamp-2">
+              <h1 className="max-[430px]:text-xl max-[649px]:text-2xl min-[650px]:text-4xl min-[960px]:text-6xl mt-3 mb-7 font-bold news__title duration-500 hover:underline hover:duration-500 line-clamp-2">
                 {breakingNews.title}
               </h1>
 

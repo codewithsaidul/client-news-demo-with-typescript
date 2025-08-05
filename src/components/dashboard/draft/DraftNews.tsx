@@ -66,7 +66,7 @@ const DraftNews = () => {
   const rowCount = draftNews.length;
   const itemsPerPage = 20;
 
-  console.log(draftNews)
+  console.log(draftNews);
 
   // ================= permanent delete by id or ids =================
   const handlePermanentDeleteNews = async () => {
@@ -156,7 +156,7 @@ const DraftNews = () => {
                     />
                   </TableCell>
                   <TableCell className="font-medium">{serialNumber}</TableCell>
-                  <TableCell className="text-xl font-title font-semibold truncate max-w-[300px]">
+                  <TableCell className="text-xl news__title font-semibold truncate max-w-[300px]">
                     {news.title}
                   </TableCell>
                   <TableCell className="truncate max-w-[300px] overflow-hidden whitespace-nowrap text-ellipsis">

@@ -1,4 +1,5 @@
 "use client";
+import RichTextEditor from "@/components/RichTextEditor/TextEditor";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
@@ -36,7 +37,6 @@ import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Swal from "sweetalert2";
 import { NewsPreviewModal } from "./PrevewNews";
-import RichTextEditor from "@/components/RichTextEditor/TextEditor";
 
 const AddNewsForm = () => {
   const { data: currUser } = useGetCurrentUserQuery(undefined);
@@ -201,7 +201,7 @@ const AddNewsForm = () => {
         }
       }
     } catch {
-      setLoadingAction(null)
+      setLoadingAction(null);
       const errorMessage =
         status === "published"
           ? "News Posting failed"
@@ -459,7 +459,6 @@ const AddNewsForm = () => {
             />
           </div>
 
-
           <div className="mt-20">
             <FormField
               control={form.control}
@@ -483,7 +482,7 @@ const AddNewsForm = () => {
           <div className="w-full mt-20">
             <Button
               type="submit"
-              className="w-full text-xl font-medium font-title text-news-white-bg bg-news-dark p-7"
+              className="w-full text-xl font-medium news__title text-news-white-bg bg-news-dark p-7"
             >
               Add News
             </Button>

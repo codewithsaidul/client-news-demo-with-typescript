@@ -1,14 +1,14 @@
 "use client";
-import { IoMdClose, IoMdMenu } from "react-icons/io";
-import Sidebar from "./Sidebar";
-import { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { FaMagnifyingGlass } from "react-icons/fa6";
-import { usePathname, useRouter } from "next/navigation";
-import { Input } from "../ui/input";
 import { navMenuList } from "@/constants/data";
 import { NavMenuList } from "@/types/client/index.types";
+import Image from "next/image";
+import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { useState } from "react";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+import { IoMdClose, IoMdMenu } from "react-icons/io";
+import { Input } from "../ui/input";
+import Sidebar from "./Sidebar";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -62,7 +62,7 @@ const Navbar = () => {
                 {navMenuList.map(({ id, link, name }: NavMenuList) => (
                   <li
                     key={id}
-                    className="text-news-white-bg text-xl font-title max-sm:border-b max-sm:border-white/30 max-sm:pb-7"
+                    className="text-news-white-bg text-xl news__title max-sm:border-b max-sm:border-white/30 max-sm:pb-7"
                   >
                     <Link href={link}>{name}</Link>
                   </li>

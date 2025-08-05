@@ -25,7 +25,7 @@ const ArticaleCard = ({ allNews }: PageCardProps) => {
             </div>
 
             <div className="mt-5 space-y-2 w-[80%]">
-              <h2 className="font-bold tex-xl sm:text-2xl font-title ">
+              <h2 className="font-bold tex-xl sm:text-2xl news__title ">
                 {news.title}
               </h2>
               <p className="text-lg font-medium text-gray-400 line-clamp-4">
@@ -33,7 +33,9 @@ const ArticaleCard = ({ allNews }: PageCardProps) => {
               </p>
               <p className="flex items-center gap-1 text-gray-400">
                 by
-                <span className="font-bold font-title">{news.author.name}</span>
+                <span className="font-bold news__title">
+                  {news.author.name}
+                </span>
               </p>
             </div>
           </Link>

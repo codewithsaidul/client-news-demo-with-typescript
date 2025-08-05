@@ -6,7 +6,7 @@ import Link from "next/link";
 interface ISimilarNews {
   category: string;
   newsType: string;
-  slug: string
+  slug: string;
 }
 
 const SimilarNews = ({ category, newsType, slug }: ISimilarNews) => {
@@ -27,13 +27,14 @@ const SimilarNews = ({ category, newsType, slug }: ISimilarNews) => {
 
   const similarNews = data?.data.filter((news) => news.slug !== slug);
 
-
   return (
     <div className="grid w-full grid-cols-1 gap-5 mt-16">
       {similarNews?.map((news, index) => (
         <div
           key={news._id}
-          className={`flex w-full gap-5 ${index === similarNews.length - 1 ? "border-0 pb-0" : "border-b pb-7"}`}
+          className={`flex w-full gap-5 ${
+            index === similarNews.length - 1 ? "border-0 pb-0" : "border-b pb-7"
+          }`}
         >
           {/* ===================== image ========================== */}
           <figure className="relative w-full overflow-hidden aspect-square max-w-32 max-h-32">
@@ -51,7 +52,7 @@ const SimilarNews = ({ category, newsType, slug }: ISimilarNews) => {
             <div className="w-full md:w-[80%]">
               <Link
                 href={`/${news.newsType}/${news.category}/${news.slug}`}
-                className="text-base font-medium sm:text-xl font-title line-clamp-2"
+                className="text-base font-medium sm:text-xl news__title line-clamp-2"
               >
                 {news.title}
               </Link>

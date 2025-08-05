@@ -21,7 +21,7 @@ const NewsSection = ({ allNews }: HomeNewsProps) => {
             <div className="mt-2">
               <Link
                 href={`/${news.newsType}/${news.category}/${news.slug}`}
-                className="text-2xl font-bold font-title"
+                className="text-2xl font-bold news__title"
               >
                 {news.title}
               </Link>

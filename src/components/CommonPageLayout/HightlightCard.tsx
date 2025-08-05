@@ -20,7 +20,7 @@ const HightlightCard = ({ allNews }: PageCardProps) => {
             </figure>
 
             <div className="mt-5 space-y-2">
-              <h2 className="tex-xl sm:text-2xl font-title font-bold ">
+              <h2 className="tex-xl sm:text-2xl news__title font-bold ">
                 {news.title}
               </h2>
               <p className="text-lg font-medium text-gray-400 line-clamp-4">
@@ -28,7 +28,9 @@ const HightlightCard = ({ allNews }: PageCardProps) => {
               </p>
               <p className="flex items-center gap-1 text-gray-400">
                 by
-                <span className="font-bold font-title">{news.author.name}</span>
+                <span className="font-bold news__title">
+                  {news.author.name}
+                </span>
               </p>
             </div>
           </Link>

@@ -49,7 +49,7 @@ const AllUsers = () => {
   if (!users) {
     return (
       <div className="flex justify-center items-center min-h-[80vh]">
-        <p className="text-2xl font-medium font-title">No users Found</p>
+        <p className="text-2xl font-medium news__title">No users Found</p>
       </div>
     );
   }
@@ -146,7 +146,7 @@ const AllUsers = () => {
     <div>
       {/* ============== heading ================= */}
       <div className="flex justify-between items-center border-b pb-7">
-        <h2 className="text-3xl font-bold font-title">All Users</h2>
+        <h2 className="text-3xl font-bold news__title">All Users</h2>
         <div className="flex items-center gap-4">
           <Dialog open={openCreateModal} onOpenChange={setOpenCreateModal}>
             {/* ==================== create new user ======================== */}
@@ -212,7 +212,7 @@ const AllUsers = () => {
           </div>
         ) : (
           <div className="flex justify-center items-center min-h-[80vh]">
-            <p className="text-2xl font-medium font-title">No users Found</p>
+            <p className="text-2xl font-medium news__title">No users Found</p>
           </div>
         )}
       </div>

@@ -26,7 +26,7 @@ const MagazineDetails = () => {
   if (!news) {
     return (
       <div className="flex justify-center items-center min-h-[90vh]">
-        <p className="text-3xl font-semibold font-title">News not found</p>
+        <p className="text-3xl font-semibold news__title">News not found</p>
       </div>
     );
   }
@@ -40,8 +40,6 @@ const MagazineDetails = () => {
     createdAt,
     author,
   }: INewsDetails = news;
-
-
 
   return (
     <div className="mt-24">
@@ -57,7 +55,7 @@ const MagazineDetails = () => {
         </figure>
 
         <div className="px-4 sm:px-8 md:px-16 lg:px-20 xl:px-32">
-          <h1 className="my-10 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-title font-semibold">
+          <h1 className="my-10 text-3xl sm:text-4xl md:text-5xl lg:text-6xl news__title font-semibold">
             {title}
           </h1>
 
@@ -72,11 +70,11 @@ const MagazineDetails = () => {
           </div>
 
           <div className="flex flex-wrap items-center gap-3 min-[525px]:gap-8 mt-3">
-            <p className="text-xl font-medium font-title capitalize">
+            <p className="text-xl font-medium news__title capitalize">
               Category: <span>{category}</span>
             </p>
             <p className="text-lg font-normal">
-              By <span className="font-title font-bold">{author.name}</span>
+              By <span className="news__title font-bold">{author.name}</span>
             </p>
             <span className="text-gray-500">{dateFormater(createdAt)}</span>
           </div>

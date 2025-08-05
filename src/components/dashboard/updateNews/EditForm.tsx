@@ -440,7 +440,7 @@ const EditForm = ({ singleNews, actionType }: UpdateNewsParams) => {
           <div className="w-full">
             <Button
               type="submit"
-              className="w-full text-xl font-medium font-title text-news-white-bg bg-news-dark p-7"
+              className="w-full text-xl font-medium news__title text-news-white-bg bg-news-dark p-7"
             >
               {isLoading
                 ? "Loading..."

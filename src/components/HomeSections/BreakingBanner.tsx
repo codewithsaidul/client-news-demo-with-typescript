@@ -15,7 +15,7 @@ const BreakingBanner = ({ news }: BreakingBannerProps) => {
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 100vw, 1200px"
           className="object-center rounded"
         />
-        <Button className="text-xl font-title py-5 px-7 absolute -bottom-4  left-1/2 transform -translate-x-1/2 capitalize">
+        <Button className="text-xl news__title py-5 px-7 absolute -bottom-4  left-1/2 transform -translate-x-1/2 capitalize">
           {news.category}
         </Button>
       </figure>
@@ -23,7 +23,7 @@ const BreakingBanner = ({ news }: BreakingBannerProps) => {
       <div className="text-center mt-8">
         <Link
           href={`/${news.newsType}/${news.category}/${news.slug}`}
-          className="text-2xl min-[350px]:text-3xl md:text-5xl font-bold font-title text-news-headline"
+          className="text-2xl min-[350px]:text-3xl md:text-5xl font-bold news__title text-news-headline"
         >
           {news.title}
         </Link>

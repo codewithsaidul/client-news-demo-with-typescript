@@ -37,7 +37,7 @@ const NewsDetails = () => {
   if (!news) {
     return (
       <div className="flex justify-center items-center min-h-[90vh]">
-        <p className="text-3xl font-semibold font-title">News not found</p>
+        <p className="text-3xl font-semibold news__title">News not found</p>
       </div>
     );
   }
@@ -93,10 +93,10 @@ const NewsDetails = () => {
     <div className="mt-32">
       <div>
         <div className="px-4 sm:px-8 md:px-16">
-          <p className="text-base sm:text-lg font-normal font-title capitalize">
+          <p className="text-base sm:text-lg font-normal news__title capitalize">
             {category}
           </p>
-          <h1 className="my-5 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-title font-semibold">
+          <h1 className="my-5 text-3xl sm:text-4xl md:text-5xl lg:text-6xl news__title font-semibold">
             {title}
           </h1>
 
@@ -106,7 +106,7 @@ const NewsDetails = () => {
             </div>
 
             <p className="text-base sm:text-lg font-normal">
-              By <span className="font-title font-bold">{author.name}</span>
+              By <span className="news__title font-bold">{author.name}</span>
             </p>
           </div>
         </div>
@@ -161,7 +161,7 @@ const NewsDetails = () => {
               </div>
 
               <p className="text-base sm:text-lg font-normal">
-                By <span className="font-title font-bold">{author.name}</span>
+                By <span className="news__title font-bold">{author.name}</span>
               </p>
             </div>
 

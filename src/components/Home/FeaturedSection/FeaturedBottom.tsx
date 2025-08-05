@@ -8,7 +8,7 @@ const FeatureBottom = ({
   slug,
   newsType,
   thumbnail,
-  author
+  author,
 }: FeaturedBottom) => {
   return (
     <div className="relative w-full max-lg:border-b max-lg:pb-8">
@@ -32,7 +32,7 @@ const FeatureBottom = ({
 
         <div className="text-news-text lg:text-white lg:absolute lg:bottom-5 lg:left-5 px-5 lg:z-2  w-full h-fit">
           <span className="text-sm capitalize">{category}</span>
-          <h2 className="text-2xl font-bold font-title my-1">{title}</h2>
+          <h2 className="text-2xl font-bold news__title my-1">{title}</h2>
           <p className="text-base">
             <span className="max-lg:text-gray-500">by</span> {author.name}
           </p>

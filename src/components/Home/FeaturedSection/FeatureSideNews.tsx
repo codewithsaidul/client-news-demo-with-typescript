@@ -4,7 +4,6 @@ import Image from "next/image";
 import Link from "next/link";
 
 const FeatureSideNews = ({ featuredNews }: FeaturedNews) => {
-
   return (
     <div className="w-full">
       <div className="flex flex-col gap-5 w-full">
@@ -26,12 +25,14 @@ const FeatureSideNews = ({ featuredNews }: FeaturedNews) => {
               <div className="mt-2">
                 <Link
                   href={`/${news.newsType}/${news.category}/${news.slug}`}
-                  className="text-sm min-[450px]:text-xl font-title text-news-headline font-semibold line-clamp-2"
+                  className="text-sm min-[450px]:text-xl news__title text-news-headline font-semibold line-clamp-2"
                 >
                   {news.title}
                 </Link>
                 <p className="text-lg mt-0.5 text-news-text">
-                  <span className="font-bold text-sm min-sm:text-base">{news.author.name}</span>
+                  <span className="font-bold text-sm min-sm:text-base">
+                    {news.author.name}
+                  </span>
 
                   <span className="mx-2">|</span>
 

@@ -11,8 +11,8 @@
   --color-news-white-bg: #fff;
   --color-news-section-bg: #f9f9f9;
   --color-news-dark: #090708;
-  --font-body: var(--font-switzerb);
-  --font-title: var(--font-lora);
+  /* --font-body: var(--font-switzer);
+  --news__title: var(--font-lora); */
 }
 
 @theme inline {
@@ -132,8 +132,11 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-news-white-bg font-body box-border;
+    background-color: #fff;
+    font-family: var(--font-switzer);
+    box-sizing: border-box;
   }
 
   html {
@@ -151,6 +154,9 @@
 }
 
 @layer utilities {
+  .news__title {
+    font-family: var(--font-lora);
+  }
 
   /* =============================== tip tap ========================== */
 
