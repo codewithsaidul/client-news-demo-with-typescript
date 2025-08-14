@@ -68,7 +68,7 @@ const HomePage = async () => {
     <main>
       <Hero hero={hero} />
 
-      <div className="px-4 md:px-8 mt-32 relative">
+      <div className="px-4 container mx-auto relative">
         <div className="mt-20">
           <FeaturedSection featuredNews={featured}>
             <EditorsPick featuredNews={editor} />

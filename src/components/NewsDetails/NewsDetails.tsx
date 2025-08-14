@@ -91,33 +91,36 @@ const NewsDetails = () => {
 
   return (
     <div className="mt-32">
-      <div>
-        <div className="px-4 sm:px-8 md:px-16">
-          <p className="text-base sm:text-lg font-normal news__title capitalize">
+      <div className="px-4 container mx-auto">
+        <div>
+          <p className="text-base sm:text-lg font-normal font-news-title text-news-headline capitalize">
             {category}
           </p>
           <h1 className="my-5 text-3xl sm:text-4xl md:text-5xl lg:text-6xl news__title font-semibold">
             {title}
           </h1>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-1">
             <div>
-              <CircleUserIcon size={24} />
+              <CircleUserIcon size={20} />
             </div>
 
-            <p className="text-base sm:text-lg font-normal">
-              By <span className="news__title font-bold">{author.name}</span>
+            <p className="text-xs text-news-headline">
+              By{" "}
+              <span className="font-news-title font-semibold">
+                {author.name}
+              </span>
             </p>
           </div>
         </div>
 
-        <div className="px-4 sm:px-8 md:px-16 lg:px-20 xl:px-32 mt-8">
+        <div className="mt-8">
           <div className="border-b flex justify-between items-center pb-5">
-            <span className="text-gray-500">{dateFormater(createdAt)}</span>
+            <span className="text-news-headline">{dateFormater(createdAt)}</span>
 
             {/* <div className="flex items-center gap-3 flex-wrap">
               {tags.map((tag, index: number) => (
-                <span key={index} className="text-gray-400">
+                <span key={index} className="text-news-headline">
                   #{tag}
                 </span>
               ))}
@@ -125,7 +128,7 @@ const NewsDetails = () => {
           </div>
         </div>
 
-        <div className="px-4 sm:px-8 md:px-16 lg:px-20 xl:px-32 mt-10">
+        <div className="mt-10">
           {/* ===================== image ============================== */}
           <figure className="relative aspect-video w-full max-h-[300px] min-h-[200px] md:max-h-[400px] lg:max-h-[500px] xl:max-h-[600px]">
             <Image
@@ -139,13 +142,13 @@ const NewsDetails = () => {
 
           {/* =============== description ====================== */}
           <div
-            className="text-news-text text-lg mt-8 tiptap-content"
+            className="text-news-headline text-lg mt-8 tiptap-content"
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
           />
 
           {/* ================== similar News =============== */}
           <div className="my-10">
-            <h2 className="text-3xl font-bold">More From Forbes</h2>
+            <h2 className="text-3xl text-news-headline font-bold">More From Forbes</h2>
             <SimilarNews
               slug={newsSlug}
               category={category}

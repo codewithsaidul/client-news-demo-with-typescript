@@ -56,8 +56,7 @@ const Login = () => {
         });
         router.push(callbackUrl);
       }
-    } catch (error) {
-      console.log(error);
+    } catch {
       Swal.fire({
         title: "Failed",
         text: "Login Failed",
@@ -123,7 +122,7 @@ const Login = () => {
             <div className="flex justify-center w-full">
               <Button
                 type="submit"
-                className="text-xl news__title py-6 px-7 cursor-pointer"
+                className="text-xl font-news-title py-6 px-7 cursor-pointer"
               >
                 Submit
               </Button>

@@ -37,18 +37,20 @@ const AllMagazine = () => {
   return (
     <div>
       {magazineNews.length > 0 ? (
-        <div className="px-4 md:px-8 mt-20">
+        <div className="px-4 container mx-auto mt-20">
           <HeroSection news={magazineNews[0]} />
           <HightlightCard allNews={magazineNews} />
           <ArticaleCard allNews={magazineNews} />
 
-          <div className="mt-7">
-            <PaginationPage
-              page={page}
-              setPage={setPage}
-              totalPages={pagination?.totalPages}
-            />
-          </div>
+          {pagination?.totalPages < 1 && (
+            <div className="mt-7">
+              <PaginationPage
+                page={page}
+                setPage={setPage}
+                totalPages={pagination?.totalPages}
+              />
+            </div>
+          )}
         </div>
       ) : (
         <NoDataFound />

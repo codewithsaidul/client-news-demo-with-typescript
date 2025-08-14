@@ -35,7 +35,7 @@ const Search = () => {
   const { data: allNews, pagination } = data;
 
   return (
-    <div className="px-4 mt-32 sm:px-8 md:px-16 lg:px-24 xl:px-72">
+    <div className="px-4 mt-32 container mx-auto">
       <div className="pb-10 border-b border-orange-400/50">
         <p className="text-xl font-medium news__title">
           Showing {pagination.total} result for:{" "}

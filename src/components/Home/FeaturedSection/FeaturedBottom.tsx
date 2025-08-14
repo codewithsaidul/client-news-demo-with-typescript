@@ -30,7 +30,7 @@ const FeatureBottom = ({
           }}
         />
 
-        <div className="text-news-text lg:text-white lg:absolute lg:bottom-5 lg:left-5 px-5 lg:z-2  w-full h-fit">
+        <div className="text-news-headline lg:text-white lg:absolute lg:bottom-5 lg:left-5 px-5 lg:z-2  w-full h-fit">
           <span className="text-sm capitalize">{category}</span>
           <h2 className="text-2xl font-bold news__title my-1">{title}</h2>
           <p className="text-base">

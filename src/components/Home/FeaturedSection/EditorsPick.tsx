@@ -2,8 +2,6 @@ import { EditorPick, FeaturedNews } from "@/types/client/news.types";
 import Link from "next/link";
 
 const EditorsPick = async ({ featuredNews: editorsPick }: FeaturedNews) => {
-
-
   return (
     <div className="mt-10 min-md:mt-32">
       <div className="relative inline-block border-b pb-7 w-full mb-5">
@@ -20,7 +18,7 @@ const EditorsPick = async ({ featuredNews: editorsPick }: FeaturedNews) => {
               <div key={_id} className="border-b mt-8 pb-5">
                 <Link
                   href={`/${newsType}/${category}/${slug}`}
-                  className="text-2xl text-news-text duration-500 hover:text-rose-500 hover:duration-500 line-clamp-2"
+                  className="text-2xl text-news-headline duration-500 hover:text-rose-500 hover:duration-500 line-clamp-2"
                 >
                   {title}
                 </Link>

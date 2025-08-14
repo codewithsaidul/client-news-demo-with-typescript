@@ -28,10 +28,10 @@ const ArticaleCard = ({ allNews }: PageCardProps) => {
               <h2 className="font-bold tex-xl sm:text-2xl news__title ">
                 {news.title}
               </h2>
-              <p className="text-lg font-medium text-gray-400 line-clamp-4">
+              <p className="text-lg font-medium text-news-headline line-clamp-4">
                 {stripHtml(news.description)}
               </p>
-              <p className="flex items-center gap-1 text-gray-400">
+              <p className="flex items-center gap-1 text-news-headline">
                 by
                 <span className="font-bold news__title">
                   {news.author.name}

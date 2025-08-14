@@ -1,19 +1,7 @@
-import { Lora } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/provider/ReduxProvider";
 import CookieConsentBanner from "@/components/Shared/CookieConsentBanner";
-import { switzer } from "../../public/font";
 
-
-
-
-
-const loraSerif = Lora({
-  variable: "--font-lora",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  display: "swap"
-});
 
 export const metadata = {
   title: "Your Trusted News Source | Latest Updates & Breaking Stories",
@@ -30,9 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`${switzer.variable} ${loraSerif.variable} antialiased`}
-      >
+      <body>
         <ReduxProvider>
           {children}
           <CookieConsentBanner />

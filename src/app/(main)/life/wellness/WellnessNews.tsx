@@ -38,18 +38,20 @@ const WellnessNews = () => {
   return (
     <div>
       {wellnessNews.length > 0 ? (
-        <div className="px-4 md:px-8 mt-20">
+        <div className="px-4 container mx-auto mt-20">
           <HeroSection news={wellnessNews[0]} />
           <HightlightCard allNews={wellnessNews} />
           <ArticaleCard allNews={wellnessNews} />
 
-          <div className="mt-7">
-            <PaginationPage
-              page={page}
-              setPage={setPage}
-              totalPages={pagination?.totalPages}
-            />
-          </div>
+          {pagination?.totalPages < 1 && (
+            <div className="mt-7">
+              <PaginationPage
+                page={page}
+                setPage={setPage}
+                totalPages={pagination?.totalPages}
+              />
+            </div>
+          )}
         </div>
       ) : (
         <NoDataFound />

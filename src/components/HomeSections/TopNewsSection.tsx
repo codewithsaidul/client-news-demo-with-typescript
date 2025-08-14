@@ -31,7 +31,7 @@ const TopNewsSection = ({ allNews }: HomeNewsProps) => {
               >
                 {news.title}
               </Link>
-              <p className="text-base mt-0.5 text-news-text">
+              <p className="text-base mt-0.5 text-news-headline">
                 <span className="font-bold max-sm:text-sm">
                   {news.author.name}
                 </span>

@@ -39,18 +39,20 @@ const AllLifeNews = () => {
   return (
     <div>
       {lifeNews.length > 0 ? (
-        <div className="px-4 md:px-8 mt-20">
+        <div className="px-4 container mx-auto mt-20">
           <HeroSection news={lifeNews[0]} />
           <HightlightCard allNews={lifeNews} />
           <ArticaleCard allNews={lifeNews} />
 
-          <div className="mt-7">
-            <PaginationPage
-              page={page}
-              setPage={setPage}
-              totalPages={pagination?.totalPages}
-            />
-          </div>
+          {pagination?.totalPages < 1 && (
+            <div className="mt-7">
+              <PaginationPage
+                page={page}
+                setPage={setPage}
+                totalPages={pagination?.totalPages}
+              />
+            </div>
+          )}
         </div>
       ) : (
         <NoDataFound />

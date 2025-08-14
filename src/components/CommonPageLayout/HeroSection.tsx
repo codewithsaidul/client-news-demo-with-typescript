@@ -13,12 +13,12 @@ const HeroSection = ({ news }: PageHeroProps) => {
         <h2 className="text-news-headline font-bold max-sm:text-4xl text-6xl news__title">
           {news.title}
         </h2>
-        <p className="text-xl font-medium text-news-text my-3 line-clamp-5">
+        <p className="text-xl font-medium text-news-headline my-3 line-clamp-5">
           {stripHtml(news.description)}
         </p>
-        <p className="flex items-center gap-1 text-base">
-          <span className="font-bold">by</span>
-          {news.author.name}
+        <p className="flex items-center gap-1 text-base text-news-headline">
+          by
+          <span className="font-bold">{news.author.name}</span>
         </p>
       </Link>
 

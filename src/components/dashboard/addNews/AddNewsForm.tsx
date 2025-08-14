@@ -23,7 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { categoryMap, CategoryMapKey } from "@/constants/data";
+import { categoryMap, CategoryMapKey } from "@/constants";
 import { useAddDraftMutation } from "@/features/news/addDraft/addDraftAPI";
 import { useAddNewsMutation } from "@/features/news/addNews/addNewsAPI";
 import { useGetCurrentUserQuery } from "@/features/user/currentUser/currentUserAPI";

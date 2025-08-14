@@ -1,5 +1,5 @@
 "use client";
-import { navMenuList } from "@/constants/data";
+import { navMenuList } from "@/constants";
 import { NavMenuList } from "@/types/client/index.types";
 import Image from "next/image";
 import Link from "next/link";
@@ -42,7 +42,7 @@ const Navbar = () => {
 
   return (
     <header className={`fixed top-0 left-0 right-0 z-50 py-6 ${headerColor}`}>
-      <nav className="px-4 md:px-8">
+      <nav className="px-4 container mx-auto">
         <div className="flex justify-between items-center">
           {/* =============== logo ================== */}
           <div className="flex items-center gap-16">

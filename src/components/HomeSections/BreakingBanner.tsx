@@ -28,7 +28,7 @@ const BreakingBanner = ({ news }: BreakingBannerProps) => {
           {news.title}
         </Link>
 
-        <p className="text-lg mt-5 text-news-text">
+        <p className="text-lg mt-5 text-news-headline">
           <span className="font-bold">{news.author.name}</span>
 
           <span className="mx-2">|</span>

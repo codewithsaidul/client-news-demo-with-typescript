@@ -29,7 +29,7 @@ const FeatureSideNews = ({ featuredNews }: FeaturedNews) => {
                 >
                   {news.title}
                 </Link>
-                <p className="text-lg mt-0.5 text-news-text">
+                <p className="text-lg mt-0.5 text-news-headline">
                   <span className="font-bold text-sm min-sm:text-base">
                     {news.author.name}
                   </span>

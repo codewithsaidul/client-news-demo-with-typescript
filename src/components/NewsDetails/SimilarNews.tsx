@@ -56,11 +56,11 @@ const SimilarNews = ({ category, newsType, slug }: ISimilarNews) => {
               >
                 {news.title}
               </Link>
-              <p className="text-base mt-0.5 text-news-text flex items-center gap-2">
+              <p className="text-base mt-0.5 text-news-headline flex items-center gap-2">
                 By
                 <span className="font-bold">{news.author.name}</span>
               </p>
-              <p className="text-base mt-0.5 text-news-text flex items-center gap-2">
+              <p className="text-base mt-0.5 text-news-headline flex items-center gap-2">
                 {dateFormater(news.createdAt)}
               </p>
             </div>

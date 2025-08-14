@@ -54,7 +54,7 @@ const MagazineDetails = () => {
           />
         </figure>
 
-        <div className="px-4 sm:px-8 md:px-16 lg:px-20 xl:px-32">
+        <div className="px-4 container mx-auto">
           <h1 className="my-10 text-3xl sm:text-4xl md:text-5xl lg:text-6xl news__title font-semibold">
             {title}
           </h1>
@@ -62,7 +62,7 @@ const MagazineDetails = () => {
           <div className="flex items-center gap-5 mt-5">
             <div className="flex items-center gap-3 flex-wrap">
               {tags.map((tag, index) => (
-                <span key={index} className="text-gray-400">
+                <span key={index} className="text-news-headline">
                   #{tag}
                 </span>
               ))}
@@ -80,7 +80,7 @@ const MagazineDetails = () => {
           </div>
 
           <p
-            className="text-news-text text-lg mt-8 tiptap-content"
+            className="text-news-headline text-lg mt-8 tiptap-content"
             dangerouslySetInnerHTML={{ __html: sanitizeHtml(description) }}
           />
         </div>
