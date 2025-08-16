@@ -1,5 +1,5 @@
 import React, { Dispatch, SetStateAction } from "react";
-
+export type { INewsletterResponse, INewsletterParams } from "./newslettet.types"
 
 
 export interface INavLink {

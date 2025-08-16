@@ -1,4 +1,4 @@
-import { NavMenuList } from "@/types/client/index.types";
+import { NavMenuList } from "@/types/client";
 
 export const navMenuList: NavMenuList[] = [
   {

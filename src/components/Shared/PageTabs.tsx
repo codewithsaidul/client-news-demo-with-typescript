@@ -1,6 +1,6 @@
 "use client";
 
-import { PageTabsProps } from "@/types/client/index.types";
+import { PageTabsProps } from "@/types/client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { twMerge } from "tailwind-merge";

@@ -9,6 +9,7 @@ import Link from "next/link";
 import { useParams } from "next/navigation";
 import LoadingSkeleton from "../loading/LoadingSkeleton";
 import SimilarNews from "./SimilarNews";
+import ShareBtn from "./ShareBtn";
 
 const topicsData = [
   { name: "Innovation", href: "/category/innovation" },
@@ -24,7 +25,7 @@ const NewsDetails = () => {
 
   if (isLoading) {
     return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-full gap-10 my-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 w-full gap-10 my-10 min-h-screen mt-32">
         <LoadingSkeleton />
         <LoadingSkeleton />
         <LoadingSkeleton />
@@ -89,8 +90,10 @@ const NewsDetails = () => {
   //   },
   // });
 
+  const shareUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/${newsType}/${category}/${slug}`
+
   return (
-    <div className="mt-32">
+    <div className="mt-32 min-h-screen">
       <div className="px-4 container mx-auto">
         <div>
           <p className="text-base sm:text-lg font-normal font-news-title text-news-headline capitalize">
@@ -125,6 +128,8 @@ const NewsDetails = () => {
                 </span>
               ))}
             </div> */}
+
+            <ShareBtn title={title} url={shareUrl} />
           </div>
         </div>
 

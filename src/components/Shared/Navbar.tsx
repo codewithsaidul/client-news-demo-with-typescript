@@ -1,6 +1,6 @@
 "use client";
 import { navMenuList } from "@/constants";
-import { NavMenuList } from "@/types/client/index.types";
+import { NavMenuList } from "@/types/client";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";

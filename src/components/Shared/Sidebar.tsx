@@ -1,6 +1,6 @@
 "use client";
 import { navMenuList } from "@/constants";
-import { ISideBar } from "@/types/client/index.types";
+import { ISideBar } from "@/types/client";
 import { twMerge } from "tailwind-merge";
 import NavLink from "./NavLink";
 

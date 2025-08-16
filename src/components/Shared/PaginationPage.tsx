@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Pagination,
   PaginationContent,
@@ -8,7 +7,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
-import { PaginationPageProps } from "@/types/client/index.types";
+import { PaginationPageProps } from "@/types/client";
 
 const PaginationPage = ({ page, setPage, totalPages }: PaginationPageProps) => {
   const siblingCount = 1; // কতগুলো পেজ নাম্বার দেখাবে current page এর বাম/ডানে
@@ -133,10 +132,10 @@ const PaginationPage = ({ page, setPage, totalPages }: PaginationPageProps) => {
         {pages.map((p, idx) => {
           if (typeof p === "string") {
             return (
-                <PaginationItem key={p + idx}>
-                  <PaginationEllipsis />
-                </PaginationItem>
-              );
+              <PaginationItem key={p + idx}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            );
           }
 
           return (

@@ -122,7 +122,8 @@ const Login = () => {
             <div className="flex justify-center w-full">
               <Button
                 type="submit"
-                className="text-xl font-news-title py-6 px-7 cursor-pointer"
+                size="lg"
+                className="text-xl font-news-title bg-news-cta duration-500 hover:bg-news-cta/80 hover:duration-500 cursor-pointer"
               >
                 Submit
               </Button>

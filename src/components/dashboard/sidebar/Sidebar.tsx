@@ -1,7 +1,7 @@
 "use client";
 import { useGetCurrentUserQuery } from "@/features/user/currentUser/currentUserAPI";
-import { ISideBar } from "@/types/client/index.types";
-import { Construction, Trash2, X } from "lucide-react";
+import { ISideBar } from "@/types/client";
+import { Construction, Mail, Trash2, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FaHome, FaUsers } from "react-icons/fa";
@@ -35,12 +35,18 @@ const navLinks = [
   },
   {
     id: 5,
+    title: "Newsletter",
+    href: "/dashboard/newsletter",
+    icon: <Mail size={32} />,
+  },
+  {
+    id: 6,
     title: "Draft",
     href: "/dashboard/allDraftNews",
     icon: <Construction size={32} />,
   },
   {
-    id: 6,
+    id: 7,
     title: "Trash News",
     href: "/dashboard/trashNews",
     icon: <Trash2 size={32} />,
@@ -52,10 +58,9 @@ const Sidebar = ({ isOpen, setIsOpen }: ISideBar) => {
 
   const handleCloseSidebar = () => {
     if (isOpen) {
-      console.log("im desk")
-      setIsOpen(false)
+      setIsOpen(false);
     }
-  }
+  };
 
   return (
     <div className="px-4 md:px-8 flex flex-col justify-between min-h-screen relative">
@@ -67,7 +72,7 @@ const Sidebar = ({ isOpen, setIsOpen }: ISideBar) => {
             width={150}
             height={150}
             priority
-            className="object-cover w-auto h-auto"
+            className="w-40 h-10"
           />
         </Link>
 
@@ -75,7 +80,11 @@ const Sidebar = ({ isOpen, setIsOpen }: ISideBar) => {
         <div className="mt-32">
           <ul className="flex flex-col gap-10">
             {navLinks.map((item) => (
-              <li onClick={handleCloseSidebar} key={item.id} className="border-b border-white/20 pb-3">
+              <li
+                onClick={handleCloseSidebar}
+                key={item.id}
+                className="border-b border-white/20 pb-3"
+              >
                 <Link
                   href={item.href}
                   className="flex items-center gap-2 text-white text-2xl"

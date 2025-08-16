@@ -1,4 +1,4 @@
-import { INavLink } from "@/types/client/index.types";
+import { INavLink } from "@/types/client";
 import Link from "next/link";
 
 const NavLink = ({ name, link, setIsOpen }: INavLink) => {
