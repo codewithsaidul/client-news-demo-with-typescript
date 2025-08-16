@@ -148,7 +148,7 @@ const Footer = () => {
                       <FormItem>
                         <FormLabel>E-mail *</FormLabel>
                         <FormControl>
-                          <Input placeholder="jhonedoe@gmail.com" {...field} />
+                          <Input  {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -162,7 +162,7 @@ const Footer = () => {
                       <FormItem>
                         <FormLabel>First Name *</FormLabel>
                         <FormControl>
-                          <Input placeholder="Jhon" {...field} />
+                          <Input  {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -176,7 +176,7 @@ const Footer = () => {
                       <FormItem>
                         <FormLabel>Last Name *</FormLabel>
                         <FormControl>
-                          <Input placeholder="Doe" {...field} />
+                          <Input  {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
