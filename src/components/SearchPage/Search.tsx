@@ -22,7 +22,7 @@ const Search = () => {
 
   if (isLoading) {
     return (
-      <div className="grid w-full grid-cols-1 gap-10 mt-32 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+      <div className="grid w-full grid-cols-1 gap-10 mt-32 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 min-h-screen">
         <LoadingSkeleton />
         <LoadingSkeleton />
         <LoadingSkeleton />

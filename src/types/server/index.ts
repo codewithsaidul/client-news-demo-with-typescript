@@ -1,5 +1,6 @@
 import { JwtPayload } from "jsonwebtoken";
 
+
 // Define a type for the context object containing params
 export interface TDeleteUserContext {
   params: {

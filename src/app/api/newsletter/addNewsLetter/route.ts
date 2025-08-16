@@ -8,7 +8,11 @@ export const POST = async (req: NextRequest) => {
     // get news data from client side
     const data = await req.json();
 
-    console.log(data)
+    const isAlreadySubscribed = await Newsletter.findOne({ email: data.email })
+
+    if (isAlreadySubscribed) {
+      throw new Error("You're already subscribed")
+    }
 
     // connected with mongodb database
     await connectDB();
@@ -16,14 +20,18 @@ export const POST = async (req: NextRequest) => {
     // insert newsletter data on db
     const result = await Newsletter.create(data);
 
-    if (result) {
-      return NextResponse.json({ success: true, message: "Subscribed Successfull", data: result }, { status: 200 }); // ✅ send full data
-    } else {
-      return NextResponse.json({ success: false }, { status: 500 });
-    }
-  } catch {
     return NextResponse.json(
-      { error: "Something went wrong" },
+      { success: true, message: "Subscribed Successfull", data: result },
+      { status: 200 }
+    ); // ✅ send full data
+  } catch (error) {
+    let errorMessage = "Something went wrong";
+
+    if (error instanceof Error) {
+      errorMessage = error.message;
+    }
+    return NextResponse.json(
+      { error: errorMessage },
       { status: 500 }
     );
   }

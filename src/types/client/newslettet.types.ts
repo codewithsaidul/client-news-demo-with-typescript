@@ -7,7 +7,8 @@ export interface INewsletterResponse {
 
 export interface INewsletter {
   _id: string;
-  name: string;
+  firstname: string;
+  lastname: string
   email: string;
   createdAt: Date;
 }

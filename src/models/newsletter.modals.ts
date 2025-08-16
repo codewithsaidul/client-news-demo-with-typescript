@@ -2,7 +2,8 @@ import { model, models, Schema } from "mongoose";
 
 const newsletterSchema = new Schema(
   {
-    name: { type: String, require: true },
+    firstname: { type: String, require: true },
+    lastname: { type: String, require: true },
     email: { type: String, require: true, unique: true }
   },
   {

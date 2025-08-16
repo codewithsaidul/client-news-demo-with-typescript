@@ -17,7 +17,6 @@ import {
   useGetAllNewsletterQuery,
 } from "@/features/newsletter/newsletterApi";
 import { deleteNewsHandler } from "@/utils/deleteNews";
-import { stripHtml } from "@/utils/stripHtml";
 import { cn, dateFormater } from "@/utils/utils";
 import { Trash2 } from "lucide-react";
 import { useState } from "react";
@@ -74,7 +73,6 @@ const AllNewsletter = () => {
     });
   };
 
-
   return (
     <div>
       {newsletters.length > 0 ? (
@@ -115,7 +113,8 @@ const AllNewsletter = () => {
               <TableRow>
                 <TableHead className="w-[60px]"></TableHead>
                 <TableHead className="w-[100px]">Sl No</TableHead>
-                <TableHead>name</TableHead>
+                <TableHead>First Name</TableHead>
+                <TableHead>Last Name</TableHead>
                 <TableHead>Email</TableHead>
                 <TableHead>Date</TableHead>
                 <TableHead>Action</TableHead>
@@ -135,18 +134,22 @@ const AllNewsletter = () => {
                         onCheckedChange={() => handleSelectIds(newsletter._id)}
                       />
                     </TableCell>
-                    <TableCell className="font-medium">
+                    <TableCell className="text-xl font-medium">
                       {serialNumber}
                     </TableCell>
-                    <TableCell className="text-xl news__title font-semibold truncate max-w-[300px]">
-                      {newsletter.name}
+                    <TableCell className="text-xl font-news-title">
+                      {newsletter.firstname}
                     </TableCell>
-                    <TableCell className="truncate max-w-[300px] overflow-hidden whitespace-nowrap text-ellipsis">
-                      {stripHtml(newsletter.email)}
+                    <TableCell className="text-xl font-news-title">
+                      {newsletter.lastname}
                     </TableCell>
-
-                    <TableCell>{dateFormater(newsletter.createdAt)}</TableCell>
-                    <TableCell className="flex gap-2">
+                    <TableCell className="text-xl font-news-title">
+                      {newsletter.email}
+                    </TableCell>
+                    <TableCell className="text-xl font-news-title">
+                      {dateFormater(newsletter.createdAt)}
+                    </TableCell>
+                    <TableCell className="text-right">
                       <Button
                         className="bg-red-500 cursor-pointer"
                         onClick={() => handleSelectIds(newsletter._id)}
