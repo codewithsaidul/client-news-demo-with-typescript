@@ -1,36 +1,127 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Client News Demo with TypeScript
 
-## Getting Started
+A full-featured **News & Magazine Web Application** built with **Next.js 13 (App Router)**, **TypeScript**, **TailwindCSS**, **ShadCN UI**, and **Redux Toolkit**. This project demonstrates modern, scalable, and production-ready practices for building content-driven applications with authentication, dashboard management, and API integration.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+## 🚀 Tech Stack
+
+* **Frontend Framework:** [Next.js 13](https://nextjs.org/) (App Router)
+* **Language:** TypeScript
+* **Styling:** TailwindCSS + ShadCN UI Components
+* **State Management:** Redux Toolkit + RTK Query
+* **Database & Backend:** MongoDB with Next.js API Routes
+* **Authentication:** JWT-based auth (Login, Logout, Register)
+* **Rich Text Editing:** Custom Rich Text Editor
+* **Deployment Ready:** Configured with `next.config.ts`
+
+---
+
+## ✨ Features
+
+### User Side (Public)
+
+* Browse news by **Category, Lists, Magazine, Lifestyle, etc.**
+* Individual **news detail pages** with SEO-friendly slugs
+* **Search functionality**
+* Cookie Consent Banner
+* Responsive, clean UI
+
+### Admin Dashboard
+
+* **Add, Edit, Update, Delete news** (draft & published)
+* **Newsletter management**
+* **User management** (add, update, delete users)
+* **Trashed news system** (soft delete + restore)
+* **Statistics & Overview dashboard**
+
+### System Features
+
+* Server-side validation with Zod Schema
+* MongoDB Models for News, Drafts, Trash, Users, Newsletter
+* API Routes (REST style) for News, Auth, Newsletter, Users
+* Global loading states & skeletons
+* Error handling + `NoDataFound` component
+
+---
+
+## 📂 Project Structure (High-Level)
+
+```
+client-news-demo-with-typescript/
+├── public/               # Fonts, images, icons, static assets
+├── src/
+│   ├── app/              # Next.js App Router (pages, layouts, API routes)
+│   ├── components/       # Reusable UI and feature components
+│   ├── constants/        # Global constants
+│   ├── features/         # Redux slices & RTK Query APIs
+│   ├── models/           # Mongoose models
+│   ├── provider/         # Redux provider
+│   ├── schema/           # Validation schemas (Zod)
+│   ├── types/            # TypeScript types (client & server)
+│   └── utils/            # Utility functions
+├── next.config.ts        # Next.js configuration
+├── package.json          # Dependencies & scripts
+├── tsconfig.json         # TypeScript config
+└── README.md             # Documentation
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚡ Getting Started
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Prerequisites
 
-## Learn More
+* Node.js >= 18
+* Bun or npm/yarn
+* MongoDB instance (local or Atlas)
 
-To learn more about Next.js, take a look at the following resources:
+### Installation
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+# Clone the repository
+git clone https://github.com/your-username/client-news-demo-with-typescript.git
+cd client-news-demo-with-typescript
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Install dependencies
+bun install   # or npm install / yarn install
 
-## Deploy on Vercel
+# Setup environment variables
+cp .env.example .env.local
+# Add MongoDB URI, JWT_SECRET, etc. in .env.local
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+# Run development server
+bun dev   # or npm run dev / yarn dev
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The app should now be running at **[http://localhost:3000](http://localhost:3000)** 🎉
+
+---
+
+## 📜 Available Scripts
+
+* `bun dev` – Start development server
+* `bun build` – Build for production
+* `bun start` – Start production server
+* `bun lint` – Run ESLint
+
+---
+
+## 🤝 Contributing
+
+Contributions, issues, and feature requests are welcome!
+Feel free to open a PR or submit an issue.
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License**. See the LICENSE file for details.
+
+---
+
+### 👨‍💻 Author
+
+Developed by **Saidul Islam Rana** – *Mern Stack Developer*
+
+---
