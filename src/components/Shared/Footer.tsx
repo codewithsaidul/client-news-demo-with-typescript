@@ -1,70 +1,39 @@
 "use client";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useAddNewsletterMutation } from "@/features/newsletter/newsletterApi";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../ui/form";
-import { Button } from "../ui/button";
-import { Input } from "../ui/input";
-import { useAddNewsletterMutation } from "@/features/newsletter/newsletterApi";
+import { useState } from "react";
 import Swal from "sweetalert2";
-import { Checkbox } from "../ui/checkbox";
-import { cn } from "@/utils/utils";
-
-const newsletterSchema = z.object({
-  firstname: z
-    .string({
-      invalid_type_error: "firstname must a text or string",
-      required_error: "firstname is requried",
-    })
-    .min(3, { message: "firstname must be 3 characters long at least" }),
-  lastname: z
-    .string({
-      invalid_type_error: "lastname must a text or string",
-      required_error: "lastname is requried",
-    })
-    .min(3, { message: "lastname must be 3 characters long at least" }),
-  email: z
-    .string({
-      invalid_type_error: "email must a text or string",
-      required_error: "email is requried",
-    })
-    .email({ message: "Please provide a valid email address" }),
-  terms: z.boolean({
-    required_error: "You must accept the terms and conditions",
-  }),
-});
 
 const Footer = () => {
   const [addNewsLetter] = useAddNewsletterMutation();
   const pathName = usePathname();
-
-  const form = useForm<z.infer<typeof newsletterSchema>>({
-    resolver: zodResolver(newsletterSchema),
-    defaultValues: {
-      firstname: "",
-      lastname: "",
-      email: "",
-      terms: false,
-    },
+  const [isSubscribed, setIsSubscribed] = useState(false);
+  const [formData, setFormData] = useState({
+    email: "",
+    firstname: "",
+    lastname: "",
+    terms: false,
   });
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value, type, checked } = e.target;
+    setFormData({
+      ...formData,
+      [name]: type === "checkbox" ? checked : value,
+    });
+  };
 
   if (pathName === "/dashboard") return null;
 
-  const onSubmit = async (values: z.infer<typeof newsletterSchema>) => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
     const data = {
-      firstname: values.firstname,
-      lastname: values.lastname,
-      email: values.email,
+      firstname: formData.firstname,
+      lastname: formData.lastname,
+      email: formData.email,
     };
 
     // Define a type for the error object structure
@@ -77,13 +46,7 @@ const Footer = () => {
     try {
       const res = await addNewsLetter(data).unwrap();
       if (res.success) {
-        Swal.fire({
-          title: res?.message,
-          icon: "success",
-          draggable: true,
-        });
-
-        form.reset();
+        setIsSubscribed(true);
       }
     } catch (error) {
       const err = error as NewsletterError;
@@ -132,101 +95,86 @@ const Footer = () => {
             </div>
 
             {/* ================ news letter form ================= */}
-            <div>
-              <p className="text-white text-sm mb-5">
-                The best of Forbes, delivered to your inbox
-              </p>
-              <Form {...form}>
+            {isSubscribed ? (
+              <div>
+                <h2 className="footer-success-title">All Set</h2>
+                <p className="footer-success-message max-w-2xs w-full">Please check your inbox to confirm your subscription. Welcome to the Forbes community</p>
+              </div>
+            ) : (
+              <div className="font-footer-newsletter">
+                <p className="text-white text-sm mb-5">
+                  The best of Forbes, delivered to your inbox
+                </p>
                 <form
-                  onSubmit={form.handleSubmit(onSubmit)}
-                  className="space-y-8 w-full text-white"
+                  onSubmit={handleSubmit}
+                  className="space-y-6 w-full text-white"
                 >
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>E-mail *</FormLabel>
-                        <FormControl>
-                          <Input  {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="space-y-4">
+                    <label>Email *</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={formData.email}
+                      onChange={handleChange}
+                      required
+                      className="w-full py-[10px] px-4 border border-white! outline-none hover:border-white/40! duration-500 hover:duration-500 mt-2 text-white text-sm font-footer-newsletter"
+                    />
+                  </div>
 
-                  <FormField
-                    control={form.control}
-                    name="firstname"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>First Name *</FormLabel>
-                        <FormControl>
-                          <Input  {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div>
+                    <label>First Name *</label>
+                    <input
+                      type="text"
+                      name="firstname"
+                      value={formData.firstname}
+                      onChange={handleChange}
+                      required
+                      className="w-full py-[10px] px-4 border border-white! outline-none hover:border-white/40! duration-500 hover:duration-500 mt-2 text-white text-sm font-footer-newsletter"
+                    />
+                  </div>
 
-                  <FormField
-                    control={form.control}
-                    name="lastname"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Last Name *</FormLabel>
-                        <FormControl>
-                          <Input  {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div>
+                    <label>Last Name *</label>
+                    <input
+                      type="text"
+                      name="lastname"
+                      value={formData.lastname}
+                      onChange={handleChange}
+                      required
+                      className="w-full py-[10px] px-4 border border-white! outline-none hover:border-white/40! duration-500 hover:duration-500 mt-2 text-white text-sm font-footer-newsletter"
+                    />
+                  </div>
 
-                  <FormField
-                    control={form.control}
-                    name="terms"
-                    render={({ field }) => (
-                      <FormItem>
-                        <div className="flex items-center gap-2">
-                          <FormControl>
-                            <Checkbox
-                              checked={field.value}
-                              onCheckedChange={field.onChange}
-                              name={field.name}
-                              ref={field.ref}
-                              className={cn(
-                                "rounded border border-gray-300! w-4! h-4!", // default border
-                                field.value && "border-gray-300!" // checked হলে border blue
-                              )}
-                            />
-                          </FormControl>
-                          <div className="text-xs flex items-center gap-x-1">
-                            <span>I accept the Forbes Germany&apos;s</span>
-                            <Link href="/terms-of-use" className="underline">
-                              Terms
-                            </Link>
-                            <span>&</span>
-                            <Link href="/privacy-policy" className="underline">
-                              Privacy Policy
-                            </Link>
-                          </div>
-                        </div>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="flex items-center gap-2">
+                    <input
+                      type="checkbox"
+                      name="terms"
+                      checked={formData.terms}
+                      onChange={handleChange}
+                      required
+                      className=" appearance-none w-4 h-4 border-2 border-white bg-transparent checked:after:content-['✔'] checked:after:block checked:after:text-white checked:after:text-center checked:after:leading-4 flex justify-center items-center"
+                    />
+                    <span className="text-xs font-footer-newsletter">
+                      I accept the{" "}
+                      <a href="/terms-of-use" className="underline">
+                        Terms
+                      </a>{" "}
+                      &{" "}
+                      <a href="/privacy-policy" className="underline">
+                        Privacy Policy
+                      </a>
+                    </span>
+                  </div>
 
-                  <Button
+                  <button
                     type="submit"
-                    size="lg"
-                    className="cursor-pointer text-xl font-news-title"
+                    className="text-sm border-2 cursor-pointer px-3 py-2 font-footer-newsletter"
                   >
                     Subscribe
-                  </Button>
+                  </button>
                 </form>
-              </Form>
-            </div>
+              </div>
+            )}
           </div>
 
           <div className="text-white">

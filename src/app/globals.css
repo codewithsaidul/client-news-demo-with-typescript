@@ -51,6 +51,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
   --font-news-title: "Lora", serif;
   --font-news-body: "Switzer", -apple-system, Roboto, Ubuntu, sans-serif;
+  --font-footer-newsletter: TrebuchetMS, "Lucida Grande", "Lucida Sans Unicode", sans‑serif;
 }
 
 :root {
@@ -144,7 +145,7 @@
   }
 
   body {
-    @apply bg-white box-border font-news-body antialiased
+    @apply bg-white box-border font-news-body antialiased;
   }
 
   .sidebar {
@@ -321,5 +322,21 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  .footer-success-title {
+    font-family: Georgia, serif;
+    font-size: 18px;
+    font-weight: 900;
+    line-height: 18px;
+    color: rgb(254, 254, 254);
+  }
+
+  .footer-success-message {
+    font-family: TrebuchetMS, "Lucida Grande", "Lucida Sans Unicode", sans‑serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 12px;
+    color: rgb(254, 254, 254);
   }
 }
