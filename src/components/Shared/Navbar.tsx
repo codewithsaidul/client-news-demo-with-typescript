@@ -1,6 +1,7 @@
 "use client";
 import { navMenuList } from "@/constants";
 import { NavMenuList } from "@/types/client";
+import { Search, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -8,8 +9,7 @@ import { useState } from "react";
 import { FaMagnifyingGlass } from "react-icons/fa6";
 import { IoMdClose, IoMdMenu } from "react-icons/io";
 import { Input } from "../ui/input";
-import Sidebar from "./Sidebar";
-import { Search, X } from "lucide-react";
+import MobileNavigation from "./MobileNavigation";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -42,7 +42,13 @@ const Navbar = () => {
   if (pathName === "/dashboard") return null;
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 py-6 ${headerColor}`}>
+    <header
+      className={`fixed top-0 z-50 w-full bg-forbes-black text-forbes-white transition-all duration-300 py-6 ${headerColor}`}
+      style={{
+        height: isOpen ? "auto" : "80px",
+        minHeight: "56px",
+      }}
+    >
       <nav className="px-4 container mx-auto">
         <div className="flex justify-between items-center">
           {/* =============== logo ================== */}
@@ -58,7 +64,7 @@ const Navbar = () => {
               />
             </Link>
 
-            <div className="max-sm:hidden">
+            <div className="max-md:hidden">
               <ul className="flex gap-5">
                 {navMenuList.map(({ id, link, name }: NavMenuList) => (
                   <li
@@ -78,22 +84,24 @@ const Navbar = () => {
               onClick={() => setShowInput(!showInput)}
               className="cursor-pointer"
             >
-              {
-                showInput ? <X size={24} color="#FFF" /> : <FaMagnifyingGlass size={24} color="#FFF" />
-              }
+              {showInput ? (
+                <X size={24} color="#FFF" />
+              ) : (
+                <FaMagnifyingGlass size={24} color="#FFF" />
+              )}
             </span>
-            <span className="text-3xl min-sm:hidden font-bold cursor-pointer transition-all duration-1000">
+            <span className="text-3xl min-md:hidden font-medium cursor-pointer transition-all duration-1000">
               {isOpen ? (
                 <IoMdClose
                   size={36}
-                  color="#FFF"
+                  color="rgb(150, 150, 150)"
                   onClick={() => setIsOpen(!isOpen)}
                   className="transition-transform transform scale-100"
                 />
               ) : (
                 <IoMdMenu
                   size={36}
-                  color="#FFF"
+                  color="rgb(150, 150, 150)"
                   onClick={() => setIsOpen(!isOpen)}
                   className="transition-transform transform scale-105"
                 />
@@ -102,9 +110,9 @@ const Navbar = () => {
           </div>
         </div>
 
-        {/* ================= Side bar ==================== */}
+        {/* ================= MObile Navigation bar ==================== */}
         <div>
-          <Sidebar isOpen={isOpen} setIsOpen={setIsOpen} />
+          {isOpen && <MobileNavigation setIsOpen={setIsOpen} />}
         </div>
 
         {showInput && (

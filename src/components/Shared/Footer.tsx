@@ -5,6 +5,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import Swal from "sweetalert2";
+import { FooterSection } from "./FooterSection";
+import { footerSections } from "@/constants";
 
 const Footer = () => {
   const [addNewsLetter] = useAddNewsletterMutation();
@@ -79,8 +81,8 @@ const Footer = () => {
   return (
     <footer className="bg-news-dark py-10 mt-24">
       <div className="px-4 container mx-auto">
-        <div className="flex flex-col lg:flex-row justify-between gap-20">
-          <div className="flex flex-col md:flex-row gap-20">
+        <div className="flex flex-col lg:flex-row gap-0 lg:gap-60">
+          <div className="flex flex-col md:flex-row gap-20 max-lg:mb-20">
             {/* =================== logo ======================= */}
             <div>
               <Link href="/">
@@ -98,7 +100,10 @@ const Footer = () => {
             {isSubscribed ? (
               <div>
                 <h2 className="footer-success-title">All Set</h2>
-                <p className="footer-success-message max-w-2xs w-full">Please check your inbox to confirm your subscription. Welcome to the Forbes community</p>
+                <p className="footer-success-message max-w-2xs w-full">
+                  Please check your inbox to confirm your subscription. Welcome
+                  to the Forbes community
+                </p>
               </div>
             ) : (
               <div className="font-footer-newsletter">
@@ -177,7 +182,7 @@ const Footer = () => {
             )}
           </div>
 
-          <div className="text-white">
+          {/* <div className="text-white">
             <h2 className="text-lg font-news-title mb-5">Sections</h2>
             <ul className="text-base space-y-3.5">
               <li className="duration-500 hover:text-news-cta hover:underline hover:duration-500">
@@ -194,7 +199,7 @@ const Footer = () => {
               </li>
             </ul>
           </div>
-
+            
           <div className="text-white">
             <h2 className="text-lg font-news-title mb-5">Exlore</h2>
             <ul className="text-base space-y-3.5">
@@ -211,11 +216,16 @@ const Footer = () => {
                 <Link href="/magazine">Leadership</Link>
               </li>
             </ul>
-          </div>
+          </div> */}
+
+          {/* Footer Sections - Accordion on mobile, columns on desktop */}
+          {footerSections.map((section) => (
+            <FooterSection key={section.title} section={section} />
+          ))}
         </div>
       </div>
       {/* ===================== copyright */}
-      <div className="text-xs  border-t container mx-auto mt-10 text-gray-200 flex flex-col min-[500px]:flex-row flex-wrap items-center gap-1.5 justify-center sm:justify-between pt-10">
+      <div className="text-xs max-lg:mt-20 border-t container mx-auto mt-10 text-gray-200 flex flex-col min-[500px]:flex-row flex-wrap items-center gap-1.5 justify-center sm:justify-between pt-10">
         <p>© 2025 Forbes Germany. All rights reserved.</p>
 
         <div className="space-x-1.5 flex items-center">
