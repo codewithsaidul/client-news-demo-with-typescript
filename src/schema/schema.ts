@@ -46,7 +46,7 @@ export const addFormSchema = z.object({
     .min(50, { message: "Description must be at least 50 characters" }),
 
   // Tags (array of strings, can be optional or required)
-  tags: z.array(z.string()).min(1, { message: "At least one tag is required" }),
+  tags: z.string().min(1, { message: "At least one tag is required" }),
 
   // Category (dropdown)
   category: z.enum(

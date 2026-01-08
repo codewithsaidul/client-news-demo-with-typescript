@@ -59,10 +59,10 @@ import React from "react";
       </div>
 
       <DialogFooter   className="border-t p-6 bg-gray-50">
-        <Button variant="outline" onClick={onSaveDraft} disabled={isAnyActionLoading}>
+        <Button variant="outline" onClick={onSaveDraft} disabled={isAnyActionLoading} className="cursor-pointer">
           {loadingAction === "draft" ? 'Adding on Draft' : 'Draft'}
         </Button>
-        <Button onClick={onPost} disabled={isAnyActionLoading}>
+        <Button onClick={onPost} disabled={isAnyActionLoading} className="cursor-pointer">
           {loadingAction === "post" ? 'Adding News' : 'Post'}
         </Button>
       </DialogFooter>

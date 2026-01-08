@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
     const result = await News.create(postData);
 
     if (result) {
-      revalidateTag("news-list");
+      revalidateTag("news-list", "default");
       revalidatePath("/");
 
       // --- রি-ভ্যালিডেশন লজিক এখানেই শুরু ---

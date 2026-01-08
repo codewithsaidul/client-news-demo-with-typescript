@@ -152,7 +152,7 @@ export interface NewsPreviewModalProps {
   newsData: {
     title: string;
     category: Category;
-    categoryType: CategoryType;
+    newsType: CategoryType;
     description: string;
     tags: string[];
     status: Status;
