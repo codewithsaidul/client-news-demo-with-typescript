@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 export function middleware(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
-  console.log("🚀 ~ middleware ~ token:", token);
+  console.log("🚀 ~ middleware ~ token:", token)
 
   if (
     req.nextUrl.pathname.startsWith("/login") ||
