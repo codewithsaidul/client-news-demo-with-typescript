@@ -56,7 +56,8 @@ const Login = () => {
         });
         router.push(callbackUrl);
       }
-    } catch {
+    } catch (error) {
+      console.log("🚀 ~ onSubmit ~ error:", error)
       Swal.fire({
         title: "Failed",
         text: "Login Failed",

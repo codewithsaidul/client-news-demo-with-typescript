@@ -47,7 +47,7 @@ export const POST = async (req: NextRequest) => {
     // ৫. ট্রানজেকশন কমিট করা
     await session.commitTransaction();
 
-    revalidateTag("news-list");
+    revalidateTag("news-list", "default");
     revalidatePath("/");
 
     // --- রি-ভ্যালিডেশন লজিক এখানেই শুরু ---

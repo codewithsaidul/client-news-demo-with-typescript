@@ -1,6 +1,5 @@
 "use client";
 import RichTextEditor from "@/components/RichTextEditor/TextEditor";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import {
@@ -27,11 +26,10 @@ import { categoryMap, CategoryMapKey } from "@/constants";
 import { useAddDraftMutation } from "@/features/news/addDraft/addDraftAPI";
 import { useAddNewsMutation } from "@/features/news/addNews/addNewsAPI";
 import { useGetCurrentUserQuery } from "@/features/user/currentUser/currentUserAPI";
-import { addFormSchema, NewsFormData } from "@/schema/schema";
-import { Category, Status } from "@/types/client/news.types";
+import { addFormSchema } from "@/schema/schema";
+import { Category, IAddNewsForm, Status } from "@/types/client/news.types";
 import { uploadToImgBB } from "@/utils/uploadImage";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
@@ -40,8 +38,7 @@ import { NewsPreviewModal } from "./PrevewNews";
 
 const AddNewsForm = () => {
   const { data: currUser } = useGetCurrentUserQuery(undefined);
-  const [tags, setTags] = useState<string[]>([]);
-  const [inputValue, setInputValue] = useState("");
+  const [tags, setTags] = useState<string>("");
   const [addNews] = useAddNewsMutation();
   const [addDraft] = useAddDraftMutation();
   const [loadingAction, setLoadingAction] = useState<"post" | "draft" | null>(
@@ -49,7 +46,7 @@ const AddNewsForm = () => {
   );
   const [categoryType, setCategoryType] = useState<CategoryMapKey>("news");
   const [isModalOpen, setModalOpen] = useState(false);
-  const [previewData, setPreviewData] = useState<NewsFormData | null>(null);
+  const [previewData, setPreviewData] = useState<IAddNewsForm | null>(null);
   const [thumbnailPreview, setThumbnailPreview] = useState<string>("");
   const router = useRouter();
 
@@ -60,13 +57,13 @@ const AddNewsForm = () => {
     reValidateMode: "onSubmit",
     defaultValues: {
       title: "",
-      thumbnail: undefined, // For file input
+      thumbnail: undefined,
       description: "",
-      tags: [], // This should be updated as user adds tags
+      tags: "",
       category: "world-news",
       categoryType: "news",
-      status: "published", // Or leave as "" if it's mandatory to select
-      priority: "none", // Default radio value
+      status: "published",
+      priority: "none",
       author: { name: "", email: "" },
     },
   });
@@ -85,42 +82,24 @@ const AddNewsForm = () => {
     form.setValue("tags", tags, { shouldValidate: false });
   }, [tags, form]);
 
-  // for adding tags
-  // For adding tag:
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if ((e.key === "Enter" || e.key === ",") && inputValue.trim()) {
-      e.preventDefault();
-      const newTag = inputValue.trim().replace(/,$/, "");
-      if (!tags.includes(newTag)) {
-        const newTags = [...tags, newTag];
-        setTags(newTags);
-        form.setValue("tags", newTags, { shouldValidate: true }); // Sync immediately
-      }
-      setInputValue("");
-    }
-  };
-
-  // For removing tag:
-  const removeTag = (index: number) => {
-    const updatedTags = [...tags];
-    updatedTags.splice(index, 1);
-    setTags(updatedTags);
-    form.setValue("tags", updatedTags, { shouldValidate: true }); // Sync immediately
-  };
-
   // preview handler
   const onPreview: SubmitHandler<FieldValues> = async (data) => {
     const file = data.thumbnail[0];
     const imgUrl = await uploadToImgBB(file);
     setThumbnailPreview(imgUrl);
 
+    const parsedTags = tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+
     setPreviewData({
       title: data.title,
       description: data.description,
-      tags: data.tags,
+      tags: parsedTags,
       thumbnail: imgUrl,
       category: data.category,
-      categoryType: data.categoryType,
+      newsType: data.categoryType,
       status: data.status,
       priority: data.priority,
       author: currUser._id,
@@ -128,57 +107,23 @@ const AddNewsForm = () => {
     setModalOpen(true);
   };
 
-  // ====================== submit news data on db ====================
-  // const onSubmit: SubmitHandler<FieldValues> = async (values) => {
-  //   setIsLoading(true);
-  //   const file = values.thumbnail[0];
-  //   const imgUrl = await uploadToImgBB(file);
-
-  //   const newsData = {
-  //     title: values.title,
-  //     thumbnail: imgUrl,
-  //     description: values.description,
-  //     tags: values.tags,
-  //     category: values.category,
-  //     newsType: values.categoryType,
-  //     status: values.status,
-  //     priority: values.priority,
-  //     author: {
-  //       name: currUser.name,
-  //       email: currUser.email,
-  //     },
-  //   };
-
-  //   try {
-  //     const res = await addNews(newsData).unwrap();
-
-  //     if (res.acknowledged) {
-  //       Swal.fire({
-  //         title: "News Added successfully!",
-  //         icon: "success",
-  //       });
-  //       setIsLoading(false);
-  //       router.push("/dashboard/allNews");
-  //     }
-  //   } catch {
-  //     Swal.fire({
-  //       title: "Failed to add news",
-  //       icon: "error",
-  //     });
-  //     setIsLoading(false);
-  //   }
-  // };
-
   const handleFinalSubmit = async (status: Status) => {
-    setModalOpen(false); // 🟢 modal বন্ধ
+    setModalOpen(false);
     if (!previewData) return;
     const action = status === "published" ? "post" : "draft";
     setLoadingAction(action);
 
+    const parsedTags = tags
+      .split(",")
+      .map((tag) => tag.trim())
+      .filter(Boolean);
+
     const newsData = {
       ...previewData,
-      newsType: previewData.categoryType,
+      newsType: previewData.newsType,
+      tags: parsedTags,
     };
+
     try {
       const successMessage =
         action === "post"
@@ -268,33 +213,11 @@ const AddNewsForm = () => {
                 <FormItem>
                   <FormLabel>Tags</FormLabel>
                   <FormControl>
-                    <div className="flex flex-wrap gap-2 border rounded-md p-2 min-h-[3rem] focus-within:ring-2 ring-primary">
-                      {tags.map((tag, index) => (
-                        <Badge
-                          key={index}
-                          variant="secondary"
-                          className="flex items-center gap-1"
-                        >
-                          {tag}
-                          <button
-                            type="button"
-                            onClick={() => removeTag(index)}
-                            className="ml-1 text-red-600 hover:text-red-800"
-                            aria-label={`Remove tag ${tag}`}
-                          >
-                            <X size={16} />
-                          </button>
-                        </Badge>
-                      ))}
-
-                      <Input
-                        className="border-none shadow-none focus-visible:ring-0 w-auto flex-1 p-0 text-lg"
-                        placeholder="Type a tag and press Enter"
-                        value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={handleKeyDown}
-                      />
-                    </div>
+                    <Input
+                      placeholder="football, world cup, argentina"
+                      value={tags}
+                      onChange={(e) => setTags(e.target.value)}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -482,7 +405,7 @@ const AddNewsForm = () => {
           <div className="w-full mt-20">
             <Button
               type="submit"
-              className="w-full text-xl font-medium news__title text-news-white-bg bg-news-dark p-7"
+              className="w-full text-xl cursor-pointer font-medium news__title text-news-white-bg bg-news-dark p-7"
             >
               Add News
             </Button>

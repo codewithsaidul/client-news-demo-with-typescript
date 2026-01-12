@@ -25,7 +25,7 @@ export const POST = async (req: NextRequest) => {
     const result = await Draft.insertOne(draftData);
 
     if (result) {
-      revalidateTag("draft-list");
+      revalidateTag("draft-list", "default");
       revalidatePath("/");
 
       // --- রি-ভ্যালিডেশন লজিক এখানেই শুরু ---

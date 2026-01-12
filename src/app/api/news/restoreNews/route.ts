@@ -58,8 +58,8 @@ export const POST = async (req: NextRequest) => {
     await session.commitTransaction();
     // ================== Transaction End ==================
 
-    revalidateTag("news-list");
-    revalidateTag("trash-news-list"); // ট্র্যাশ লিস্টও রিভ্যালিডেট করুন
+    revalidateTag("news-list", "default");
+    revalidateTag("trash-news-list", "default"); // ট্র্যাশ লিস্টও রিভ্যালিডেট করুন
     revalidatePath("/");
 
     // --- রি-ভ্যালিডেশন লজিক এখানেই শুরু ---

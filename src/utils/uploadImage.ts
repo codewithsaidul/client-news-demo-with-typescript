@@ -1,4 +1,3 @@
-// utils/uploadToImgBB.ts
 export const uploadToImgBB = async (file: File) => {
   const formData = new FormData();
   formData.append("image", file);
@@ -7,7 +6,8 @@ export const uploadToImgBB = async (file: File) => {
     method: "POST",
     body: formData,
   });
-
+  
+  console.log("🚀 ~ uploadToImgBB ~ process.env.NEXT_PUBLIC_API_KEY:", process.env.NEXT_PUBLIC_API_KEY)
 
   if (!res.ok) {
     const text = await res.text();

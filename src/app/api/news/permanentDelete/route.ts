@@ -24,7 +24,7 @@ export const DELETE = async (req: NextRequest) => {
     // ৪. মূল `Trash` কালেকশন থেকে নিউজগুলোকে ডিলিট করা
     await TrashNews.deleteMany({ _id: { $in: selectedIds } });
 
-    revalidateTag("news-list");
+    revalidateTag("news-list", "default");
     revalidatePath("/");
 
     return NextResponse.json(
