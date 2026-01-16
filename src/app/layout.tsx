@@ -25,7 +25,7 @@ export const metadata: Metadata = {
         alt: "Your Trusted News Source",
       },
     ],
-    locale: "en_US", // worldwide audience হিসেবে EN-US ঠিক আছে
+    locale: "en_US",
     type: "website",
   },
 };
